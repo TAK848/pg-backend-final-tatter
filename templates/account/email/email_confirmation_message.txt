@@ -1,0 +1,5 @@
+{% extends "account/email/base_message.txt" %}
+
+{% block content %}{% autoescape off %}{{ user.handle_name }}さんが{{ site_name }}でこのメールアドレスを登録しようとしています。問題がなければ，確認のために以下のURLをクリックしてください。
+
+{{ activate_url }}{% endautoescape %}{% endblock content %}

@@ -1,0 +1,106 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+
+{% block subtitle %}{% trans "E-mail Addresses" %}{% endblock %}
+
+{% block content %}
+<h1>{% trans "E-mail Addresses" %}</h1>
+{% if user.emailaddress_set.all %}
+<p>以下のメールアドレスがアカウントに登録されています。</p>
+
+<form action="{% url 'account_email' %}" class="email_list" method="post">
+  {% csrf_token %}
+  <fieldset class="blockLabels mb-3">
+    <div class="mb-2">
+      {% for emailaddress in user.emailaddress_set.all %}
+      <div class="form-check">
+        <input id="email_radio_{{forloop.counter}}" class="form-check-input" type="radio" name="email" {% if emailaddress.primary or user.emailaddress_set.count == 1 %}checked="checked" {% endif %} value="{{emailaddress.email}}">
+        <label for="email_radio_{{forloop.counter}}" class="form-check-label {% if emailaddress.primary %}primary_email{%endif%}">
+
+
+          {% if emailaddress.primary %}
+          <span class="primary badge bg-primary">メイン</span>
+          {% endif %}
+          {{ emailaddress.email }}
+          {% if emailaddress.verified %}
+          <span class="verified"><span class="badge bg-success">確認済</span></span>
+          {% else %}
+          <span class="unverified"><span class="badge bg-warning text-dark">未確認</span></span>
+          {% endif %}
+        </label>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="buttonHolder mb-3">
+
+      <button class="secondaryAction btn btn-primary btn-sm" type="submit" name="action_primary">{% trans 'Make Primary' %}</button>
+      <button class="secondaryAction btn btn-warning btn-sm" type="submit" name="action_send">{% trans 'Re-send Verification' %}</button>
+      <button class="primaryAction btn btn-danger btn-sm" type="submit" name="action_remove">{% trans 'Remove' %}</button>
+    </div>
+
+  </fieldset>
+</form>
+
+{% else %}
+<p><strong>{% trans 'Warning:'%}</strong> {% trans "You currently do not have any e-mail address set up. You should really add an e-mail address so you can receive notifications, reset your password, etc." %}</p>
+
+{% endif %}
+
+{% if can_add_email %}
+<h2>
+  メールアドレスの追加登録
+</h2>
+
+<form method="post" action="{% url 'account_email' %}" class="add_email needs-validation" novalidate>
+  {% csrf_token %}
+
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="form-floating mb-3">
+        <input type="email" id="id_email" class="form-control{% if form.email.value or form.email.errors %} is-invalid{% endif %}" name="{{ form.email.name }}" {% if was_post %}value="{{ form.email.value }}" {% endif %}required placeholder="tatter@example.com" autocomplete="email" aria-describedby="emailHelp" spellcheck="true" autocorrect="on">
+        <label for="{{ form.email.id_for_label }}" class="">
+          追加するメールアドレス
+        </label>
+
+        {% if form.email.errors %}
+        {% for error in form.email.errors %}
+        <div class="invalid-feedback">
+          {{ error|escape }}
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="invalid-feedback">
+          メールアドレスを入力して下さい。
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="col-lg-8 d-grid gap-2 mb-3">
+      <button name="action_add" type="submit" class="btn btn-primary btn-md">
+        メールアドレスを追加登録する
+      </button>
+    </div>
+  </div>
+</form>
+{% endif %}
+
+{% endblock %}
+
+
+{% block extra_body %}
+{% include "account/snippets/javascript_validation.html" %}
+<script type="text/javascript">
+  (function () {
+    let message = "{% trans 'Do you really want to remove the selected e-mail address?' %}";
+    let actions = document.getElementsByName('action_remove');
+    if (actions.length) {
+      actions[0].addEventListener("click", function (e) {
+        if (!confirm(message)) {
+          e.preventDefault();
+        }
+      });
+    }
+  })();
+</script>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'tatter/base.html' %}
+{% block content %}
+<h1>
+  トップページ（仮）
+</h1>
+{% if user.is_authenticated %}
+<p>
+  {{ user.handle_name }}さん，Tatterへようこそ！<br>
+  ログイン情報:{{ user.handle_name }}@{{ user.username}}&lt;{{ user.email }}&gt;
+</p>
+{% else %}
+<p>
+  Tatterへようこそ！ログインは<a href="{% url 'account_login' %}">こちら</a>から，新規登録は<a href="{% url 'account_signup' %}">こちら</a>からどうぞ！
+</p>
+{% endif %}
+{% endblock content %}

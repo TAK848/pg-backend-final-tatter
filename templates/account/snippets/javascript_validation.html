@@ -1,0 +1,21 @@
+<script>
+  'use strict'
+  document.addEventListener('DOMContentLoaded', function () {
+    //最低限のバリデーション
+    window.addEventListener('load', function () {
+      // カスタムブートストラップ検証スタイルを適用するすべてのフォームを取得
+      let forms = document.getElementsByClassName('needs-validation');
+      // ループして帰順を防ぐ
+      let validation = Array.prototype.filter.call(forms, function (form) {
+        // submitボタンを押したら以下を実行
+        form.addEventListener('submit', function (event) {
+          if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    }, false);
+  }, false);
+</script>

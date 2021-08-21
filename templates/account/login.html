@@ -1,0 +1,102 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+
+{% block subtitle %}
+ログイン
+{% endblock %}
+
+{% block content %}
+<h1>
+  ログイン
+</h1>
+
+<p>まだアカウントを作成していない場合は，
+  <a href="{{ signup_url }}">こちらから新規登録</a>してください。
+</p>
+
+{% if form.non_field_errors %}
+{% for error_message in form.non_field_errors %}
+<div class="rounded-3 alert alert-danger alert-dismissible fade show" role="alert">
+  {{ error_message }}
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+{% elif form.errors %}
+<div class="rounded-3 alert alert-danger alert-dismissible fade show" role="alert">
+  エラーが発生しました。以下の指示に従って修正してください。
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+
+<form class="login needs-validation" novalidate method="POST" action="{% url 'account_login' %}">
+  {% csrf_token %}
+
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="form-floating mb-3">
+        <input type="text" id="id_login" class="form-control{% if was_post and not form.login.errors %} is-valid{% elif form.login.errors %} is-invalid{% endif %}" name="{{ form.login.name }}" {% if was_post %}value="{{ form.login.value }}" {% endif %}required placeholder="tatter@example.com" autocomplete="email" spellcheck="true" autocorrect="on">
+        <label for="{{ form.login.id_for_label }}" class="">
+          メールアドレスまたはユーザーID
+        </label>
+
+        {% if form.login.errors %}
+        {% for error in form.login.errors %}
+        <div class="invalid-feedback">
+          {{ error|escape }}
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="invalid-feedback">
+          メールアドレスまたはユーザーIDを入力して下さい。
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="col-lg-10">
+      <div class="form-floating mb-3">
+        <input type="password" id="id_password1" class="form-control{% if form.password.value and not form.password.errors %} is-valid{% elif form.password.errors %} is-invalid{% endif %}" name="password" {% if was_post and not form.password.errors %} value="{{ form.password.value }}" {% endif %} required placeholder="パスワード" autocomplete="current-password">
+        <label class="" for="id_password1">
+          {{ form.password.label }}
+        </label>
+
+        {% if form.password.errors %}
+        {% for error in form.password.errors %}
+        <div class="invalid-feedback">
+          {{ error|escape }}
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="invalid-feedback">
+          パスワードを入力してください。
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="col-lg-10 mb-3">
+      <div class="form-check">
+        <input type="checkbox" id="id_remember" class="form-check-input" name="remember" {% if form.remember.value or not was_post %} checked{% endif %}>
+        <label class="form-check-label" for="id_remember">
+          ログインしたままにする
+        </label>
+      </div>
+    </div>
+
+    <div class="col-lg-10 d-grid gap-2 mb-3">
+      <button type="submit" class="btn btn-primary btn-md" name="submit">ログイン</button>
+    </div>
+  </div>
+
+
+  {% comment %} {% bootstrap_form form layout="horizontal" %} {% endcomment %}
+  {% if redirect_field_value %}
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+  {% endif %}
+</form>
+<p>
+  パスワードをお忘れの場合は，<a class="button secondaryAction" href="{% url 'account_reset_password' %}">こちらから再設定</a>してください。
+</p>
+
+{% endblock %}
