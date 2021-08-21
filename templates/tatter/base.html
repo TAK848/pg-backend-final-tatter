@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+  {% block head %}
+  {% include 'tatter/snippets/head.html' %}
+  {% endblock head %}
+  <title>
+    {% block title %}Tatter{% endblock title %}
+  </title>
+</head>
+
+<body style="padding-top:65px">
+  {% block header %}
+  {% include 'tatter/snippets/header.html' %}
+  {% endblock header %}
+
+  {% block body %}
+  <div class="container">
+    {% include 'tatter/snippets/messages.html' %}
+
+    {% block content %}
+    <p>
+      Tatterへようこそ！このページには，コンテンツが設定されていません。
+    </p>
+    {% endblock content %}
+  </div>
+  {% endblock body %}
+
+  {% block extra_body %}
+  {% endblock extra_body %}
+
+  {% block footer %}
+  {% include 'tatter/snippets/footer.html' %}
+  {% endblock footer %}
+
+  {% block foot %}
+  {% include 'tatter/snippets/foot.html' %}
+  {% endblock foot %}
+</body>
+
+</html>

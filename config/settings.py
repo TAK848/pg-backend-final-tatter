@@ -10,8 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import os
 from pathlib import Path
-from config import local_settings
+
+from django.contrib import messages
+
+from . import local_settings
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +30,7 @@ SECRET_KEY = local_settings.SECRET_KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -38,6 +42,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'tatter',
+    'accounts',
+
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+
+    'django_bootstrap5',
 ]
 
 MIDDLEWARE = [
@@ -55,7 +69,9 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -63,6 +79,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'config.context_processors.my_context_processor',
             ],
         },
     },
@@ -98,15 +115,21 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
+    {
+        'NAME': 'accounts.password_validation.MixInSymbolValidator',
+    },
+    {
+        'NAME': 'accounts.password_validation.AsciiSymbolValidator',
+    },
 ]
 
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ja'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Tokyo'
 
 USE_I18N = True
 
@@ -119,16 +142,61 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
 # Auth関係
+SITE_ID = 1
+AUTHENTICATION_BACKENDS = (
+    'allauth.account.auth_backends.AuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+AUTH_USER_MODEL = 'accounts.CustomUser'
+ACCOUNT_FORMS = {
+    'login': 'accounts.forms.CustomLoginForm',
+    'signup': 'accounts.forms.CustomSignupForm',
+}
+ACCOUNT_ADAPTER = 'accounts.adapter.CustomAccountAdapter'
+
+LOGIN_URL = '/login/'
+LOGOUT_URL = '/logout/'
+LOGIN_REDIRECT_URL = '/'
+ACCOUNT_LOGOUT_REDIRECT_URL = 'accounts:login'
+
+ACCOUNT_LOGOUT_ON_GET = True
+
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+ACCOUNT_USERNAME_REQUIRED = False
+
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+
+ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/'
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_SUBJECT_PREFIX = ''
+
+# メール設定
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = local_settings.EMAIL_USE_TLS
 EMAIL_HOST = local_settings.EMAIL_HOST
 EMAIL_PORT = local_settings.EMAIL_PORT
 EMAIL_HOST_USER = local_settings.EMAIL_HOST_USER
 EMAIL_HOST_PASSWORD = local_settings.EMAIL_HOST_PASSWORD
+
+# Bootstrap5のメッセージタグ
+MESSAGE_TAGS = {
+    messages.ERROR: 'alert alert-danger',
+    messages.WARNING: 'alert alert-warning',
+    messages.SUCCESS: 'alert alert-success',
+    messages.INFO: 'alert alert-info',
+    messages.DEBUG: 'alert alert-secondary',
+}
