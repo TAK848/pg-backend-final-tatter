@@ -18,6 +18,8 @@ class UserProfileView(View):
     def get(self, request, username):
         context = {
             'search_username': username,
+            'is_me': False,
+            'got_user': None,
         }
         try:
             user = User.objects.get(username=username.lower())
