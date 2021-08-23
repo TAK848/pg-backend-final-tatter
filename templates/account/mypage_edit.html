@@ -72,10 +72,13 @@
 
     <div class="col-12">
       <div class="form-floating mb-3">
-        <textarea class="form-control" placeholder="自己紹介を入力してください。" id="id_biography" style="height: 150px" name="biography" maxlength="{{ form.biography.field.max_length }}">{% if form.biography.value %}{{ form.biography.value }}{% else %}{{ user.biography }}{% endif %}</textarea>
+        <textarea class="form-control" placeholder="自己紹介を入力してください。" id="id_biography" style="height: 150px" name="biography" maxlength="{{ form.biography.field.max_length }}" aria-describedby="biographyHelp">{% if form.biography.value %}{{ form.biography.value }}{% else %}{{ user.biography }}{% endif %}</textarea>
         <label for="id_biography">
           自己紹介
         </label>
+        <div id="biographyHelp" class="form-text">
+          自己紹介は，{{ form.biography.field.max_length }}文字以内です。
+        </div>
       </div>
     </div>
 
