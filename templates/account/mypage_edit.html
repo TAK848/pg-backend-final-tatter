@@ -1,4 +1,5 @@
 {% extends 'account/base.html' %}
+{% block subtitle %}プロフィール変更{% endblock subtitle %}
 {% block content %}
 <h1>
   プロフィール変更
@@ -50,7 +51,7 @@
 
     <div class="col-lg-6">
       <div class="form-floating mb-3">
-        <input type="text" id="id_display_username" class="form-control{% if was_post and not form.display_username.errors %} is-valid{% elif form.display_username.errors %} is-invalid{% endif %}" name="{{ form.display_username.name }}" value="{% if form.display_username.value %}{{ form.display_username.value }}{% else %}{{ user.display_username }}{% endif %}" required placeholder="名前" autocomplete="username" spellcheck="true" autocorrect="on" maxlength="50">
+        <input type="text" id="id_display_username" class="form-control{% if request.method == 'POST' and not form.display_username.errors %} is-valid{% elif form.display_username.errors %} is-invalid{% endif %}" name="{{ form.display_username.name }}" value="{% if form.display_username.value %}{{ form.display_username.value }}{% else %}{{ user.display_username }}{% endif %}" required placeholder="名前" autocomplete="username" spellcheck="true" autocorrect="on" maxlength="{{ form.display_username.field.max_length }}">
         <label for="{{ form.display_username.id_for_label }}" class="">
           ユーザー名（ID）
         </label>
@@ -71,7 +72,7 @@
 
     <div class="col-12">
       <div class="form-floating mb-3">
-        <textarea class="form-control" placeholder="Leave a comment here" id="id_biography" style="height: 150px" name="biography">{% if form.biography.value %}{{ form.biography.value }}{% else %}{{ user.biography }}{% endif %}</textarea>
+        <textarea class="form-control" placeholder="自己紹介を入力してください。" id="id_biography" style="height: 150px" name="biography" maxlength="{{ form.biography.field.max_length }}">{% if form.biography.value %}{{ form.biography.value }}{% else %}{{ user.biography }}{% endif %}</textarea>
         <label for="id_biography">
           自己紹介
         </label>
@@ -120,6 +121,4 @@
 
   </div>
 </form>
-{{form.errors}}
-{{form.non_field_errors}}
 {% endblock content %}

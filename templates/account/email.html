@@ -2,10 +2,10 @@
 
 {% load i18n %}
 
-{% block subtitle %}{% trans "E-mail Addresses" %}{% endblock %}
+{% block subtitle %}メールアドレスの管理{% endblock %}
 
 {% block content %}
-<h1>{% trans "E-mail Addresses" %}</h1>
+<h1>メールアドレスの管理</h1>
 {% if user.emailaddress_set.all %}
 <p>以下のメールアドレスがアカウントに登録されています。</p>
 
@@ -34,16 +34,18 @@
     </div>
     <div class="buttonHolder mb-3">
 
-      <button class="secondaryAction btn btn-primary btn-sm" type="submit" name="action_primary">{% trans 'Make Primary' %}</button>
-      <button class="secondaryAction btn btn-warning btn-sm" type="submit" name="action_send">{% trans 'Re-send Verification' %}</button>
-      <button class="primaryAction btn btn-danger btn-sm" type="submit" name="action_remove">{% trans 'Remove' %}</button>
+      <button class="secondaryAction btn btn-primary btn-sm" type="submit" name="action_primary">メインにする</button>
+      <button class="secondaryAction btn btn-warning btn-sm" type="submit" name="action_send">確認メールを再送する</button>
+      <button class="primaryAction btn btn-danger btn-sm" type="submit" name="action_remove">削除</button>
     </div>
 
   </fieldset>
 </form>
 
 {% else %}
-<p><strong>{% trans 'Warning:'%}</strong> {% trans "You currently do not have any e-mail address set up. You should really add an e-mail address so you can receive notifications, reset your password, etc." %}</p>
+<p>
+  <strong>注意:</strong> メールアドレスが設定されていません。通知を受け取ったり、パスワードをリセットしたりするためにはメールアドレスを登録する必要があります
+</p>
 
 {% endif %}
 

@@ -31,7 +31,7 @@
   <div class="row">
     <div class="col-lg-6">
       <div class="form-floating mb-3">
-        <input type="email" id="id_email" class="form-control{% if was_post and not form.email.errors %} is-valid{% elif form.email.errors %} is-invalid{% endif %}" name="{{ form.email.name }}" {% if was_post %}value="{{ form.email.value }}" {% endif %}required placeholder="tatter@example.com" autocomplete="email" aria-describedby="emailHelp" spellcheck="true" autocorrect="on">
+        <input type="email" id="id_email" class="form-control{% if request.method == 'POST' and not form.email.errors %} is-valid{% elif form.email.errors %} is-invalid{% endif %}" name="email" {% if request.method == 'POST' %}value="{{ form.email.value }}" {% endif %}required placeholder="tatter@example.com" autocomplete="email" aria-describedby="emailHelp" spellcheck="true" autocorrect="on">
         <label for="{{ form.email.id_for_label }}" class="">
           メールアドレス
         </label>
@@ -52,7 +52,7 @@
 
     <div class="col-lg-6">
       <div class="form-floating mb-3">
-        <input type="text" id="id_handle_name" class="form-control{% if was_post and not form.handle_name.errors %} is-valid{% elif form.handle_name.errors %} is-invalid{% endif %}" name="{{ form.handle_name.name }}" {% if was_post %}value="{{ form.handle_name.value }}" {% endif %}required placeholder="名前" autocomplete="nickname" spellcheck="true" autocorrect="on" maxlength="50">
+        <input type="text" id="id_handle_name" class="form-control{% if request.method == 'POST' and not form.handle_name.errors %} is-valid{% elif form.handle_name.errors %} is-invalid{% endif %}" name="handle_name" {% if request.method == 'POST' %}value="{{ form.handle_name.value }}" {% endif %}required placeholder="名前" autocomplete="nickname" spellcheck="true" autocorrect="on" maxlength="{{ form.handle_name.field.max_length }}">
         <label for="{{ form.handle_name.id_for_label }}" class="">
           名前（表示名）
         </label>
@@ -73,7 +73,7 @@
 
     <div class="col-lg-6">
       <div class="form-floating mb-3">
-        <input type="password" id="id_password1" class="form-control{% if form.password1.value and not form.password1.errors %} is-valid{% elif form.password1.errors %} is-invalid{% endif %}" name="password1" {% if was_post and not form.password1.errors %} value="{{ form.password1.value }}" {% endif %} required placeholder="パスワード" autocomplete="new-password" aria-describedby="password1Help">
+        <input type="password" id="id_password1" class="form-control{% if form.password1.value and not form.password1.errors %} is-valid{% elif form.password1.errors %} is-invalid{% endif %}" name="password1" {% if request.method == 'POST' and not form.password1.errors %} value="{{ form.password1.value }}" {% endif %} required placeholder="パスワード" autocomplete="new-password" aria-describedby="password1Help">
         <label class="" for="id_password1">
           {{ form.password1.label }}
         </label>
@@ -97,7 +97,7 @@
 
     <div class="col-lg-6">
       <div class="form-floating mb-3">
-        <input type="password" id="id_password2" class="form-control{% if form.password2.value and not form.password1.errors and not form.password2.errors %} is-valid{% endif %}{% if form.password2.errors %}  is-invalid{% endif %}" name="password2" {% if was_post and not form.password1.errors and not form.password2.errors %}value="{{ form.password2.value }}" {% endif %} required placeholder="パスワード（確認用）" autocomplete="new-password">
+        <input type="password" id="id_password2" class="form-control{% if form.password2.value and not form.password1.errors and not form.password2.errors %} is-valid{% endif %}{% if form.password2.errors %}  is-invalid{% endif %}" name="password2" {% if request.method == 'POST' and not form.password1.errors and not form.password2.errors %}value="{{ form.password2.value }}" {% endif %} required placeholder="パスワード（確認用）" autocomplete="new-password" aria-describedby="password2Help">
         <label class="" for="id_password2">
           パスワード（確認用）
         </label>
