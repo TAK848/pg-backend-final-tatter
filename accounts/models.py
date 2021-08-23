@@ -13,6 +13,8 @@ from django.utils import timezone
 
 from .validate import linebreak_limit_biography
 
+User = get_user_model()
+
 
 class UserManager(BaseUserManager):
 
@@ -122,23 +124,21 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         return f'{self.handle_name}@{self.username}<{self.email}>'
 
     def set_random_username(self, n=12):
-        user = get_user_model()
         dat = ascii_letters + digits + '_'
         while True:
             made_username = ''.join([random.choice(dat) for i in range(n)])
             try:
-                if user.objects.get(username=made_username.lower()):
+                if User.objects.get(username=made_username.lower()):
                     continue
-            except user.DoesNotExist:
+            except User.DoesNotExist:
                 self.username = made_username.lower()
                 self.display_username = made_username
                 return made_username
 
     def clean(self):
         super().clean()
-        user = get_user_model()
         if not self.username == self.display_username.lower():
-            if user.objects.filter(username=self.display_username.lower()):
+            if User.objects.filter(username=self.display_username.lower()):
                 raise ValidationError('そのユーザー名は既に使用されています。')
             else:
                 self.username = self.display_username.lower()

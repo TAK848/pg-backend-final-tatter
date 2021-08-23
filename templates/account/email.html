@@ -60,7 +60,7 @@
   <div class="row">
     <div class="col-lg-8">
       <div class="form-floating mb-3">
-        <input type="email" id="id_email" class="form-control{% if form.email.value or form.email.errors %} is-invalid{% endif %}" name="{{ form.email.name }}" {% if was_post %}value="{{ form.email.value }}" {% endif %}required placeholder="tatter@example.com" autocomplete="email" aria-describedby="emailHelp" spellcheck="true" autocorrect="on">
+        <input type="email" id="id_email" class="form-control{% if form.email.value or form.email.errors %} is-invalid{% endif %}" name="{{ form.email.name }}" {% if request.method == 'POST' %}value="{{ form.email.value }}" {% endif %}required placeholder="tatter@example.com" autocomplete="email" aria-describedby="emailHelp" spellcheck="true" autocorrect="on">
         <label for="{{ form.email.id_for_label }}" class="">
           追加するメールアドレス
         </label>

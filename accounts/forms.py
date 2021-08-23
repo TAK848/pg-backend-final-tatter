@@ -40,7 +40,7 @@ class UserForm(forms.ModelForm):
     uuid = forms.CharField()
 
     class Meta:
-        model = get_user_model()
+        model = User
         fields = (
             'handle_name',
             'display_username',
