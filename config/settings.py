@@ -167,7 +167,7 @@ ACCOUNT_ADAPTER = 'accounts.adapter.CustomAccountAdapter'
 LOGIN_URL = '/login/'
 LOGOUT_URL = '/logout/'
 LOGIN_REDIRECT_URL = '/'
-ACCOUNT_LOGOUT_REDIRECT_URL = 'accounts:login'
+ACCOUNT_LOGOUT_REDIRECT_URL = 'login_url'
 
 ACCOUNT_LOGOUT_ON_GET = True
 

@@ -7,3 +7,4 @@ class CustomAccountAdapter(DefaultAccountAdapter):
         user.handle_name = form.cleaned_data.get('handle_name')
         user.set_random_username()
         user.save()
+        return user

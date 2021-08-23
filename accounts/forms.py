@@ -3,6 +3,8 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 
+User = get_user_model()
+
 
 class CustomSignupForm(SignupForm):
     handle_name = forms.CharField(
@@ -23,8 +25,6 @@ class CustomSignupForm(SignupForm):
 
     def clean_handle_name(self):
         value = self.cleaned_data.get('handle_name')
-        print('handle_name')
-        print(value)
         if not value:
             forms.ValidationError('名前の入力が必要です。')
         return value
@@ -53,14 +53,13 @@ class UserForm(forms.ModelForm):
         return self.cleaned_data.get('display_username').strip().lstrip('@').strip()
 
     def clean(self):
-        users = get_user_model()
         uuid = self.cleaned_data.get('uuid')
         try:
-            user = users.objects.get(uuid=uuid)
+            user = User.objects.get(uuid=uuid)
             if not user.check_password(self.cleaned_data.get('password')):
                 raise ValidationError('パスワードが一致しませんでした。')
             if not user.username == self.cleaned_data.get('display_username').lower():
                 self.cleaned_data['changed_initial_username'] = True
-        except users.DoesNotExist:
+        except User.DoesNotExist:
             raise ValidationError('ユーザー情報を見つけられませんでした')
         return self.cleaned_data
