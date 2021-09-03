@@ -13,10 +13,6 @@ class CustomSignupForm(SignupForm):
     )
     agreement = forms.BooleanField(label='利用規約に同意')
 
-    def signup(self, request, user):
-        user.save()
-        return user
-
     def clean_agreement(self):
         value = self.cleaned_data.get('agreement')
         if not value:
@@ -35,7 +31,7 @@ class CustomLoginForm(LoginForm):
         return super().clean_login().lstrip('@').strip()
 
 
-class UserForm(forms.ModelForm):
+class UpdateUserProfileForm(forms.ModelForm):
     password = forms.CharField(label='パスワード')
     uuid = forms.CharField()
 

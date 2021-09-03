@@ -1,5 +1,5 @@
 def my_context_processor(req):
     return {
-        'domain_name': 'https :// test tatter . com（仮）',
+        'domain_name': 'testtatter.com',
         'site_name': 'Tatter',
     }

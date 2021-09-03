@@ -3,7 +3,6 @@ import re
 import uuid
 from string import ascii_letters, digits
 
-from django.contrib.auth import get_user_model
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
                                         PermissionsMixin)
 from django.core.exceptions import ValidationError
@@ -18,11 +17,11 @@ class UserManager(BaseUserManager):
 
     def create_user(self, email, password=None):
         if not email:
-            raise ValueError('Users must have an email address')
+            raise ValueError('ユーザー作成にはメールアドレスが必須です')
         user = self.model(
             email=self.normalize_email(email),
         )
-        user.set_random_username()
+        user.set_new_random_username()
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -121,30 +120,31 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return f'{self.handle_name}@{self.username}<{self.email}>'
 
-    def set_random_username(self, n=12):
-        User = get_user_model()
-        dat = ascii_letters + digits + '_'
-        while True:
-            made_username = ''.join([random.choice(dat) for i in range(n)])
-            try:
-                if User.objects.get(username=made_username.lower()):
-                    continue
-            except User.DoesNotExist:
-                self.username = made_username.lower()
-                self.display_username = made_username
-                return made_username
-
-    def clean(self):
-        super().clean()
-        User = get_user_model()
-        if not self.username == self.display_username.lower():
-            if User.objects.filter(username=self.display_username.lower()):
-                raise ValidationError('そのユーザー名は既に使用されています。')
-            else:
-                self.username = self.display_username.lower()
-
     def set_username(self, username):
         self.username = username.lower()
         self.display_username = username
         if not self.changed_initial_username:
             self.changed_initial_username = True
+
+    def set_new_random_username(self, n=12):
+        made_username = self.make_random_username(n)
+        self.username = made_username.lower()
+        self.display_username = made_username
+
+    def make_random_username(self, n=12):
+        User = self.__class__
+        dat = ascii_letters + digits + '_'
+        while True:
+            made_username = ''.join([random.choice(dat) for i in range(n)])
+            if not User.objects.filter(username=made_username.lower()).exists():
+                return made_username
+
+    def clean(self):
+        super().clean()
+        User = self.__class__
+        lower_display_username = self.display_username.lower()
+        if not self.username == lower_display_username:
+            if User.objects.filter(username=lower_display_username):
+                raise ValidationError('そのユーザー名は既に使用されています。')
+            else:
+                self.username = lower_display_username
