@@ -1,0 +1,13 @@
+{% if user.is_authenticated and not user.changed_initial_username %}
+<div class="rounded-3 alert alert-info alert-dismissible fade show" role="alert">
+    ようこそ，{{ user.handle_name }}さん！あなたのユーザー名は，初期設定された@{{ user.display_username }}から変更されていません。変更する場合は，<a href="{% url 'accounts:mypage_edit' %}">こちら</a>をクリックしてください。
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+
+{% for message in messages %}
+<div class="rounded-3 {{ message.tags }} alert-dismissible fade show" role="alert">
+    {{message}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}

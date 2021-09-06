@@ -1,0 +1,6 @@
+{% autoescape off %}{{ site_name }}をご利用いただきありがとうございます。
+
+{% block content %}{% endblock content %}
+
+{{ domain_name }}
+{% endautoescape %}

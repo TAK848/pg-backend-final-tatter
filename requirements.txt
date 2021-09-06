@@ -1,2 +1,2 @@
 Django~=3.2
-django-allauth
+django-allauth==0.45.0

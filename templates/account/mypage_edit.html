@@ -1,0 +1,127 @@
+{% extends 'account/base.html' %}
+{% block subtitle %}プロフィール変更{% endblock subtitle %}
+{% block content %}
+<h1>
+  プロフィール変更
+</h1>
+
+{% if form.non_field_errors %}
+{% for error_message in form.non_field_errors %}
+<div class="rounded-3 alert alert-danger alert-dismissible fade show" role="alert">
+  {{ error_message }}
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+{% elif form.errors %}
+<div class="rounded-3 alert alert-danger alert-dismissible fade show" role="alert">
+  エラーが発生しました。以下の指示に従って修正してください。
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+
+<p>
+  メールアドレスの管理は<a href="{% url 'account_email' %}">こちら</a>から行ってください。
+</p>
+<p>
+  パスワードの変更は<a href="{% url 'account_change_password' %}">こちら</a>から行ってください。
+</p>
+
+<form class="needs-validation" novalidate method="POST" action="{% url 'accounts:mypage_edit' %}">
+  <div class="row justify-content-center">
+    <div class="col-lg-6">
+      <div class="form-floating mb-3">
+        <input type="text" id="id_handle_name" class="form-control{% if form.handle_name.errors %} is-invalid{% endif %}" name="handle_name" value="{% if form.handle_name.value %}{{ form.handle_name.value }}{% else %}{{ user.handle_name }}{% endif %}" required placeholder="名前（表示名）" autocomplete="nickname" spellcheck="true" autocorrect="on">
+        <label for="id_handle_name" class="">
+          名前（表示名）
+        </label>
+
+        {% if form.handle_name.errors %}
+        {% for error in form.handle_name.errors %}
+        <div class="invalid-feedback">
+          {{ error|escape }}
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="invalid-feedback">
+          名前（表示名）を入力して下さい。
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="form-floating mb-3">
+        <input type="text" id="id_display_username" class="form-control{% if request.method == 'POST' and not form.display_username.errors %} is-valid{% elif form.display_username.errors %} is-invalid{% endif %}" name="{{ form.display_username.name }}" value="{% if form.display_username.value %}{{ form.display_username.value }}{% else %}{{ user.display_username }}{% endif %}" required placeholder="名前" autocomplete="username" spellcheck="true" autocorrect="on" maxlength="{{ form.display_username.field.max_length }}">
+        <label for="{{ form.display_username.id_for_label }}" class="">
+          ユーザー名（ID）
+        </label>
+
+        {% if form.display_username.errors %}
+        {% for error in form.display_username.errors %}
+        <div class="invalid-feedback">
+          {{ error|escape }}
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="invalid-feedback">
+          ユーザー名（ID）を入力してください。
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="col-12">
+      <div class="form-floating mb-3">
+        <textarea class="form-control" placeholder="自己紹介を入力してください。" id="id_biography" style="height: 150px" name="biography" maxlength="{{ form.biography.field.max_length }}" aria-describedby="biographyHelp">{% if form.biography.value %}{{ form.biography.value }}{% else %}{{ user.biography }}{% endif %}</textarea>
+        <label for="id_biography">
+          自己紹介
+        </label>
+        <div id="biographyHelp" class="form-text">
+          自己紹介は，{{ form.biography.field.max_length }}文字以内です。
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12">
+      <div class="form-floating mb-3">
+        <input type="password" id="id_password" class="form-control{% if form.non_field_errors or form.password.errors %} is-invalid{% endif %}" name="password" required placeholder="パスワード" autocomplete="current-password">
+        <label class="" for="id_password">
+          現在のパスワード
+        </label>
+        {% if form.password.errors %}
+        {% for error in form.password.errors %}
+        <div class="invalid-feedback">
+          {{ error|escape }}
+        </div>
+        {% endfor %}
+        {% elif form.non_field_errors %}
+        <div class="invalid-feedback">
+          再度正しいパスワードを入力してください。パスワードを忘れた場合は，<a href="{% url 'account_change_password' %}">こちらから変更</a>してください。
+        </div>
+        {% else %}
+        <div class="invalid-feedback">
+          パスワードを入力してください。
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <div class="form-check">
+        <input type="checkbox" id="id_tart_is_private" class="form-check-input" name="tart_is_private" {% if form.tart_is_private.value %} checked{% endif %}>
+        <label class="form-check-label" for="id_tart_is_private">
+          Tartを非公開にする（フォロワーと自分にのみ公開されます）
+        </label>
+      </div>
+    </div>
+
+    <div class=" d-grid gap-2 mb-3">
+      <button type="submit" class="btn btn-primary">プロフィールを更新</button>
+    </div>
+    {% csrf_token %}
+    <input type="hidden" name="uuid" value="{{ user.uuid }}">
+    <input type="hidden" name="changed_initial_username" value="{{ user.changed_initial_username }}">
+
+  </div>
+</form>
+{% endblock content %}
