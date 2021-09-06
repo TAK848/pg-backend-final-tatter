@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 
     'tatter',
     'accounts',
+    'tart',
 
     'django.contrib.sites',
     'allauth',
