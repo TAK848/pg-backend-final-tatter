@@ -74,7 +74,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         help_text='入力した生のユーザーID（小文字変換なし）。',
         validators=[
             RegexValidator(
-                regex=r'^[\w_]+\Z',
+                regex=r'^[\w]+\Z',
                 flags=re.ASCII,
                 message='半角英数字またはアンダースコア（_）のみで入力してください。'
             ),
