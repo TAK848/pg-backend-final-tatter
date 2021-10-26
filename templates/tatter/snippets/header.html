@@ -1,51 +1,48 @@
+{% load static %}
 <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-2 fixed-top">
-    <div class="container-xl">
-        <a class="navbar-brand" href="{% url 'tatter:index' %}">Tatter</a>
+  <div class="container-xl">
+    <a class="navbar-brand" href="{% url 'tatter:index' %}">Tatter</a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'tatter:index' %}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Test1</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Test2</a>
-                </li>
-            </ul>
-            {% if user.is_authenticated %}
-            <ul class="navbar-nav mb-0">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle me-md-2 mb-2 mb-md-0" aria-current="page" id="navbarDropdownMenuLink" href="{% url 'account_logout' %}" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-                            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
-                        </svg>
-                        {{user.handle_name}} <span class="text-muted small">@{{user.display_username}}</span>
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li><a class="dropdown-item" href="{% url 'tatter:user_profile' username=user.display_username %}">プロフィール</a></li>
-                        <li><a class="dropdown-item" href="{% url 'accounts:mypage_edit' %}">設定</a></li>
-                        <li><a class="dropdown-item" href="{% url 'account_logout' %}">ログアウト</a></li>
-                    </ul>
-                </li>
-            </ul>
-
-            {% else %}
-            <ul class="navbar-nav mb-0">
-                <li class="nav-item">
-                    <a class="nav-link text-white btn btn-outline-primary me-md-2 mb-2 mb-md-0" aria-current="page" href="{% url 'account_login' %}">ログイン</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white btn btn-md btn-primary" href="{% url 'account_signup' %}">新規登録</a>
-                </li>
-            </ul>
-            {% endif %}
-        </div>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'tatter:index' %}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Test1</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Test2</a>
+        </li>
+      </ul>
+      {% if user.is_authenticated %}
+      <ul class="navbar-nav mb-0">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle me-md-2 mb-2 mb-md-0" aria-current="page" id="navbarDropdownMenuLink" href="{% url 'account_logout' %}" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="{% static 'default-icon-96.png' %}" class="rounded-circle border border-light" style="vertical-align: middle; height:21px;">
+            {{user.handle_name}} <span class="text-muted small">@{{user.display_username}}</span>
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="{% url 'tatter:user_profile' username=user.display_username %}">プロフィール</a></li>
+            <li><a class="dropdown-item" href="{% url 'accounts:mypage_edit' %}">設定</a></li>
+            <li><a class="dropdown-item" href="{% url 'account_logout' %}">ログアウト</a></li>
+          </ul>
+        </li>
+      </ul>
+      {% else %}
+      <ul class="navbar-nav mb-0">
+        <li class="nav-item">
+          <a class="nav-link text-white btn btn-outline-primary me-md-2 mb-2 mb-md-0" aria-current="page" href="{% url 'account_login' %}">ログイン</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white btn btn-md btn-primary" href="{% url 'account_signup' %}">新規登録</a>
+        </li>
+      </ul>
+      {% endif %}
     </div>
+  </div>
 </nav>
