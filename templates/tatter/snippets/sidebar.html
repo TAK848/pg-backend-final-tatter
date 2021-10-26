@@ -1,0 +1,31 @@
+<aside class="col-lg-4 mt-3">
+  <div class="position-sticky" style="top:60pt;">
+    {% if user.is_authenticated %}{# Tart作成ボタンを設置 #}
+    <div class="d-none d-lg-block">{# 大画面用 #}
+      <button class="btn btn-primary btn-lg rounded-pill w-100 tart-compose-side-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+          <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+          <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+        </svg>
+        Tartを作成
+      </button>
+    </div>
+    <div class="position-fixed" style="bottom:30px;right:30px;z-index:2;">{# 小画面用 #}
+      <button class="btn btn-primary d-lg-none rounded-circle p-0 border border-light border-2 tart-compose-mobile-button" style="width:5rem;height:5rem;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+          <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+          <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+        </svg>
+      </button>
+      {% include 'tart/snippets/compose_tart_modal.html' %}
+    </div>
+    {% else %}{# 登録・ログインボタンを設置 #}
+    <a href="{% url 'account_signup' %}" class="btn btn-primary btn-lg rounded-pill w-100 mb-3">
+      新規登録
+    </a>
+    <a href="{% url 'account_login' %}" class="btn btn-outline-primary btn-lg rounded-pill w-100 mb-3">
+      ログイン
+    </a>
+    {% endif %}
+  </div>
+</aside>

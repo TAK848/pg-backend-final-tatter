@@ -1,0 +1,7 @@
+{% extends 'tatter/base.html' %}
+{% block content %}
+{% include 'tart/snippets/compose_tart_modal.html' %}
+<main>
+  {% include 'tart/snippets/tartlist.html' with page_mode='detail' %}
+</main>
+{% endblock content %}

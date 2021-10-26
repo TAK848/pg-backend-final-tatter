@@ -1,0 +1,32 @@
+{% load static %}
+<div class="modal fade tart-compose-modal" id="tartComposeModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header py-2">
+        <h5 class="modal-title" id="staticBackdropLabel">Tartを作成</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body py-2">
+        <div class="row align-items-center mb-2">
+          <div class="col-2">
+            <img src="{% static 'default-icon-400.png' %}" class="img-fluid rounded-circle border border-light">
+          </div>
+          <div class="col">
+            {{user.handle_name}}<br>
+            @{{user.display_username}}
+          </div>
+        </div>
+        <div class="form-floating">
+          <textarea class="form-control tart-compose-input" placeholder="いま，どうしてる？" id="tart_text_compose_modal" style="height: 180px" name="biography" maxlength="140" required></textarea>
+          <div class="invalid-feedback tart-text-feedback"></div>
+          <label for="tart_text_compose_modal">
+            いま，どうしてる？
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary rounded-pill compose-tart-send w-100"><span class="tart-create-spinner spinner-border spinner-border-sm me-1 d-none" role="status" aria-hidden="true"></span>Tart!</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -16,17 +16,18 @@
   {% endblock header %}
 
   {% block body %}
-  <div class="container">
+  <main class="container">
     {% include 'tatter/snippets/messages.html' %}
-
-    {% block content %}
-    <p>
-      Tatterへようこそ！このページには，コンテンツが設定されていません。
-    </p>
-    {% endblock content %}
-  </div>
+    <div class="row">
+      <div class="col-lg-8">
+        {% block content %}
+        <p>Tatterへようこそ！このページには，コンテンツが設定されていません。</p>
+        {% endblock content %}
+      </div>
+      {% include 'tatter/snippets/sidebar.html' %}
+    </div>
+  </main>
   {% endblock body %}
-
   {% block extra_body %}
   {% endblock extra_body %}
 
