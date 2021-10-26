@@ -46,5 +46,6 @@ class Tart(models.Model):
     created_at = models.DateTimeField('作成日時', auto_now_add=True)
     updated_at = models.DateTimeField('更新日時', auto_now=True)
     was_edited = models.BooleanField('編集済', default=False)
+    was_deleted = models.BooleanField('削除済', default=False)
 
     objects = TartManager()
