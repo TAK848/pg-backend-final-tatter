@@ -10,3 +10,7 @@ class TartSerializer(ModelSerializer):
         model = Tart
 
         fields = ['user', 'text', 'id', 'was_edited', 'created_at']
+
+    def update(self, instance, validated_data):
+        instance.was_edited = True
+        return super().update(instance, validated_data)
