@@ -1,39 +1,46 @@
 {% extends 'tatter/base.html' %}
+{% load static %}
 {% block title %}{{ got_user.handle_name }}さん（@{{ got_user.display_username }}） | Tatter{% endblock title %}
 {% block content %}
-<h1>
-  {{ got_user.handle_name }}
-</h1>
-{% if exist_user and not got_user.account_is_hidden %}
-{{ got_user.handle_name }} <span class="text-muted small">@{{ got_user.display_username }}</span>
+<div class="row align-items-center mb-3">
+  <div class="col-2">
+    <img src="{% static 'default-icon-400.png' %}" class="img-fluid rounded-circle">
+  </div>
+  <div class="col-10">
+    {% if exist_user and not got_user.account_is_hidden %}
+    <span class="h4">{{ got_user.handle_name }}</span><br>
+    <span class="text-muted small">@{{ got_user.display_username }}</span>
+    {% else %}
+    @{{ search_username }}<br>
+    このアカウントは存在しません。
+    {% endif %}
+  </div>
+</div>
 <p>
   {% if got_user.biography %}
-  {{ got_user.biography|linebreaksbr }}
+  {{ got_user.biography|linebreaksbr|urlize }}
   {% else %}
   <span class="text-muted">自己紹介が未設定です。</span>
   {% endif %}
 </p>
 {% if is_me %}
 <div class="mb-3">
-  <a class="btn btn-primary" href="{% url 'accounts:mypage_edit' %}">プロフィール編集</a>
+  <a class="btn btn-primary rounded-pill" href="{% url 'accounts:mypage_edit' %}">プロフィール編集</a>
 </div>
 {% endif %}
 
 {% if got_user.tart_is_private and not is_me %}
 <p>
-  このアカウントのTartは，非公開です。
+  このアカウントのTartは，非公開です。<strong>未実装</strong>
 </p>
 {% else %}
-<h2>
-  Tart一覧
-</h2>
-<p>
-  実装中…
-</p>
 {% endif %}
 
-{% else %}
-@{{ search_username }}
-このアカウントは存在しません。
+{% if exist_user and not got_user.account_is_hidden %}
+<p>{{tart_count}}Tart</p>
 {% endif %}
+
+<main>
+  {% include 'tart/snippets/tartlist.html' with page_mode='profile' %}
+</main>
 {% endblock content %}

@@ -1,0 +1,99 @@
+{% load static %}
+<article class="tart card mb-2">
+  {# ユーザー情報を表示するカードのヘッダー #}
+  <div class="card-header tart-user py-1 position-relative">
+    <a href="" class="stretched-link text-black tart-user-link">
+      <div class="row align-items-center">
+        <div class="tart-usericon col-1 ms-2 px-0" style="width: 41px;">
+          <img src="{% static 'default-icon-400.png' %}" class="img-fluid rounded-circle">
+        </div>
+        <div class="tart-user-names col-9 col-sm-10 col-md-11">
+          <p class="h6 my-0 text-truncate tart-handle-name"></p>
+          <p class="text-muted small my-0 text-truncate tart-display-username">@</p>
+        </div>
+      </div>
+    </a>
+  </div>
+  {# Tart本文・日時・編集済かどうかを表示するカードのヘッダー #}
+  <div class="card-body tart-body py-2">
+    <textarea class="tart-edit-textarea form-control d-none mb-2" rows="6" maxlength="140"></textarea>
+    <div class="invalid-feedback tart-edit-textarea-feedback"></div>
+    <div class="row tart-edit-action d-none mb-2">
+      <div class="col d-grid pe-1">
+        <button type="button" class="btn btn-secondary btn-md tart-edit-cancel">キャンセル</button>
+      </div>
+      <div class="col d-grid ps-1">
+        <button type="button" class="btn btn-primary btn-md tart-edit-confirm"><span class="spinner-border spinner-border-sm d-none tart-edit-confirm-spinner me-1" role="status" aria-hidden="true"></span>更新する</button>
+      </div>
+    </div>
+    <p class="tart-text my-1"></p>
+    <p class="my-0 tart-details small text-muted">
+      <time></time><span class="tart-edited d-none">（編集済）</span>
+    </p>
+  </div>
+  {# 詳細ページでのみ表示する詳細情報 #}
+  <ul class="tart-detail-list list-group list-group-flush">
+    <li class="list-group-item tart-detail-list-action small text-muted">
+      <div class="row">
+        <div class="col-auto me-2 tart-boost-detail">
+          <span class="tart-boost-detail-count">xx</span>件のブースト
+        </div>
+        <div class="col-auto me-2 tart-like-detail">
+          <span class="tart-like-detail-count">xxx</span>件のいいね
+        </div>
+      </div>
+    </li>
+  </ul>
+  {# 各種操作ボタンを表示するカードのフッター #}
+  <div class="card-footer tart-footer p-0">
+    <div class="row tart-action text-center justify-content-between">
+      <div class="col tart-action-like position-relative px-0 py-1 border-end">
+        <a class="text-decoration-none text-muted stretched-link" href="#" onclick="return false;" style="z-index: 1;">
+          <div class="row justify-content-center">
+            <div class="col-auto px-0 me-1">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
+              </svg>
+            </div>
+            <div class="col-auto px-0 tart-like-count">xxx</div>
+          </div>
+        </a>
+      </div>
+      <div class="col tart-action-boost position-relative px-0 py-1 border-end">
+        <a class="text-decoration-none text-black stretched-link" href="#" onclick="return false;" style="">
+          <div class="row justify-content-center">
+            <div class="col-auto px-0 me-1">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" stroke="currentColor" stroke-width="0" aria-hidden="true" class="text-muted">
+                <path d="M23.77 15.67c-.292-.293-.767-.293-1.06 0l-2.22 2.22V7.65c0-2.068-1.683-3.75-3.75-3.75h-5.85c-.414 0-.75.336-.75.75s.336.75.75.75h5.85c1.24 0 2.25 1.01 2.25 2.25v10.24l-2.22-2.22c-.293-.293-.768-.293-1.06 0s-.294.768 0 1.06l3.5 3.5c.145.147.337.22.53.22s.383-.072.53-.22l3.5-3.5c.294-.292.294-.767 0-1.06zm-10.66 3.28H7.26c-1.24 0-2.25-1.01-2.25-2.25V6.46l2.22 2.22c.148.147.34.22.532.22s.384-.073.53-.22c.293-.293.293-.768 0-1.06l-3.5-3.5c-.293-.294-.768-.294-1.06 0l-3.5 3.5c-.294.292-.294.767 0 1.06s.767.293 1.06 0l2.22-2.22V16.7c0 2.068 1.683 3.75 3.75 3.75h5.85c.414 0 .75-.336.75-.75s-.337-.75-.75-.75z"></path>
+              </svg>
+            </div>
+            <div class="col-auto text-muted px-0 tart-boost-count">xx</div>
+          </div>
+        </a>
+      </div>
+      <div class="col tart-action-others position-relative p-0">
+        <div class="dropup px-0 position-relative py-1">
+          <a class="text-decoration-none text-black stretched-link" href="#" role="button" id="dropdownMenuLink{{tart.id}}" data-bs-toggle="dropdown" aria-expanded="false" style="z-index: 1;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+              <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+            </svg>
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink{{tart.id}}">
+            <li class="tart-edit"><a class="dropdown-item tart-edit-a" href="#" onclick="return false;"><span class="text-muted me-2"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                    <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z" /></svg></span>編集</a>
+            </li>
+            <li class="tart-delete"><a class="dropdown-item tart-delete-a" href="#" onclick="return false;"><span class="text-muted me-2"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                    <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" /> </svg></span>削除</a>
+            </li>
+            <li><a class="dropdown-item tart-share" href="#" onclick="return false;" title="未実装"><span class="text-muted me-2"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-share-fill" viewBox="0 0 16 16">
+                    <path d="M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5z" /> </svg></span>共有(未実装)</a>
+            </li>
+            <li><a class="dropdown-item tart-report" onclick="return false;" title="未実装"><span class="text-muted me-2"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-left-dots-fill" viewBox="0 0 16 16">
+                    <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793V2zm5 4a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" /> </svg></span>報告(未実装)</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>

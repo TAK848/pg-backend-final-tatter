@@ -1,0 +1,44 @@
+{# Tartの型（テンプレート） #}
+<template id="tartTemplate">{% include 'tart/snippets/tart_template.html' with template=True %}</template>
+{# 新規Tartを読み込むボタン #}
+<button class="btn btn-outline-primary rounded-pill w-100 mb-1 position-relative d-none tart-load-new"><span class="spinner-border spinner-border-sm me-1 d-none tart-load-new-spinner" role="status" aria-hidden="true"></span>新しいTartを取得<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger tart-load-new-badge invisible"></span></button>
+{# Tart一覧用section #}
+<section id="tartList"></section>
+{# さらに過去のTartを読み込むボタン #}
+<button class="btn btn-outline-primary rounded-pill w-100 tart-load-old d-none disabled"><span class="spinner-border spinner-border-sm me-1 tart-load-old-spinner" role="status" aria-hidden="true"></span>さらにTartを読み込む</button>
+{# 下端に文字を表示する場所 #}
+<p class="tart-old-status d-none"></p>
+{# ローディングスピナー（初回などに表示） #}
+<div class="d-flex justify-content-center text-primary tart-load-spinner mt-2">
+  <div class="spinner-border" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+{# 削除時の確認モーダル #}
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Tartを削除しますか?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>この操作は取り消せません。プロフィール，あなたをフォローしているアカウントのタイムライン（未実装），Tatterの検索結果（未実装）からTartが削除されます。 </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+        <button type="button" class="btn btn-danger tart-delete-submit">削除</button>
+      </div>
+    </div>
+  </div>
+</div>
+{# 削除時などに使う画面全体を覆うモーダルスピナー #}
+<div class="modal" tabindex="-1" id='spinner'>
+  <div class="modal-dialog modal-dialog-centered justify-content-center">
+    <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+</div>
+{# javascript処理にどうしても必要なデータ #}
+<div class="d-none js-data" data-pageMode="{{ page_mode }}" {% if page_mode == 'detail' %}data-tartDetailId="{{ request.resolver_match.kwargs.pk }}"{% endif %} {% if page_mode == 'profile' %}data-profileUserUuid="{{ got_user.uuid }}" data-profileUserDisplayUsername="{{ got_user.display_username }}" data-profileUserHandleName="{{ got_user.handle_name }}"{% endif %} data-tartDetailPkUrl="{% url 'tart:detail' pk='pk' %}" data-tartDeletePkUrl="{% url 'tart_api:delete' pk='pk' %}" data-tartUpdatePkUrl="{% url 'tart_api:update' pk='pk' %}" data-tartListUrl="{% url 'tart_api:list' %}" data-tartRetrievePkUrl="{% url 'tart_api:retrieve' pk='pk' %}" data-tartComposeUrl="{% url 'tart_api:compose' %}" data-tartCheckUpdateUrl="{% url 'tart_api:check_update' %}" data-tatterIndexUrl="{% url 'tatter:index' %}" data-requestedUserUuid="{{ user.uuid }}" data-requestedUserDisplayUsername="{{ user.display_username }}" data-requestedUserHandleName="{{ user.handle_name }}" data-userProfileUsernameUrl="/user/username/"></div>
