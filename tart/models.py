@@ -4,7 +4,7 @@ from string import ascii_letters, digits
 from django.contrib.auth import get_user_model
 from django.db import models
 
-from .validate import linebreak_limit_tart
+from .validators import linebreak_limit_tart
 
 User = get_user_model()
 
