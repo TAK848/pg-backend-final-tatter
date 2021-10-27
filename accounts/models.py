@@ -10,7 +10,7 @@ from django.core.validators import RegexValidator
 from django.db import models
 from django.utils import timezone
 
-from .validate import linebreak_limit_biography
+from .validators import linebreak_limit_biography
 
 
 class UserManager(BaseUserManager):

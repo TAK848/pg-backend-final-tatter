@@ -7,9 +7,5 @@ User = get_user_model()
 class UserSerializer(ModelSerializer):
     class Meta:
         model = User
-        fields = (
-            'handle_name',
-            'display_username',
-            'uuid',
-        )
+        fields = ('handle_name', 'display_username', 'uuid')
         read_only_fields = ('handle_name', 'display_username', 'uuid')

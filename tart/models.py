@@ -4,12 +4,13 @@ from string import ascii_letters, digits
 from django.contrib.auth import get_user_model
 from django.db import models
 
-from .validate import linebreak_limit_tart
+from .validators import linebreak_limit_tart
 
 User = get_user_model()
+MAX_TART_ID_LENGTH = 15
 
 
-def make_random_tart_id(n=15):
+def make_random_tart_id(n=MAX_TART_ID_LENGTH):
     dat = ascii_letters + digits + '-_'
     while True:
         made_id = ''.join([random.choice(dat) for i in range(n)])
@@ -28,7 +29,7 @@ class Tart(models.Model):
         default=make_random_tart_id,
         primary_key=True,
         editable=False,
-        max_length=15,
+        max_length=MAX_TART_ID_LENGTH,
     )
     user = models.ForeignKey(
         User,
