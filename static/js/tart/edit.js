@@ -1,5 +1,4 @@
 'use strict';
-
 /** 編集機能関係の機能 */
 class TartEdit {
   static editingInstance = null;

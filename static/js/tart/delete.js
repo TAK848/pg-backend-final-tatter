@@ -1,5 +1,4 @@
-'use strict'
-
+'use strict';
 /** 削除関係機能 */
 class TartDelete {
   static deleting = false;
