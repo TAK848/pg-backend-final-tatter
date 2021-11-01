@@ -1,4 +1,5 @@
 'use strict';
+/** Tart作成・作成モーダル・送信機能のクラス */
 class ComposeTart {
   static composing = false;
   static init() {
@@ -26,7 +27,7 @@ class ComposeTart {
     this.onInput();
   }
   /**
-   * @param {Boolean} disabled
+   * @param {Boolean} disabled 作成モーダルを表示できるかどうか
    */
   static set triggerButtonDisabled(disabled) {
     this.triggerSideButton.disabled = disabled;
@@ -37,7 +38,7 @@ class ComposeTart {
     this.inputTextarea.focus();
   }
   /**
-   * 
+   * 何か文字がinputされているかどうかを確認し，されていれば送信可能に，いなければ送信ボタンを無効にする
    */
   static onInput() {
     const composedText = this.inputTextarea.value;
@@ -47,8 +48,10 @@ class ComposeTart {
       this.sendButton.disabled = false;
     }
   }
-
-  static onComposeTartSendClick(event) {
+  /**
+   * 送信ボタンが押されたら送信する
+   */
+  static onComposeTartSendClick() {
     const composedText = this.inputTextarea.value;
     if (composedText) {
       this.sendButtonSpinner.classList.remove('d-none');
