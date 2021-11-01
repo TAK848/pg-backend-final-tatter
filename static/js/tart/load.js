@@ -1,5 +1,4 @@
 'use strict';
-
 /** Tart読み込み関係のクラス */
 class LoadTart {
   static button;

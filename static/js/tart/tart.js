@@ -1,5 +1,4 @@
-'use strict'
-
+'use strict';
 /** Tartの実際のデータを管理するクラス */
 class Tart {
   static list = [];

@@ -1,5 +1,4 @@
-'use strict'
-
+'use strict';
 /** 取得したユーザー情報を管理するクラス */
 class User {
   static userMap = new Map();

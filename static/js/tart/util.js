@@ -1,5 +1,4 @@
 'use strict';
-
 // 一度にロードするTartの数
 const NUMBER_TO_LOAD_AT_A_TIME = 10;
 // Tartの文字数制限
