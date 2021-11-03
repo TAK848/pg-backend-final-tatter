@@ -10,6 +10,7 @@ class LoadTart {
   static init() {
     TartArticle.init();
     this.spinner = document.querySelector('.tart-load-spinner');
+    this.statusParagraph = document.querySelector('.tart-status-message');
     this._load({
       time: 'new'
     });
@@ -26,10 +27,6 @@ class LoadTart {
   static set spinnerIsVisible(visible) {
     if (visible) this.spinner.classList.remove('d-none');
     else this.spinner.classList.add('d-none');
-  }
-  static set buttonIsVisible(visible) {
-    if (visible) this.button.classList.remove('invisible');
-    else this.button.classList.add('invisible');
   }
   /** 最新のTartの取得開始 */
   static loadNewTart() {
@@ -80,6 +77,9 @@ class LoadTart {
       }
       LoadOldTart.loading = false;
       LoadNewTart.loading = false;
+    } else if (data.status === 404) {
+      this.statusParagraphText = 'Tartは存在しません。';
+      this.spinnerIsVisible = false;
     } else console.log(`${data.status} ${data.statusText}`);
     this.loadingTime = null;
   }
@@ -98,6 +98,13 @@ class LoadTart {
     if (LoadOldTart.button.getBoundingClientRect().top - window.innerHeight < 0) {
       LoadOldTart.onLoadOldTart(event);
     }
+  }
+  /**
+   * @param {String} statusText 表示するメッセージのstring
+   */
+  static set statusParagraphText(statusText) {
+    this.statusParagraph.classList.remove('d-none');
+    this.statusParagraph.textContent = statusText;
   }
 }
 
@@ -148,7 +155,6 @@ class LoadOldTart {
   static set statusParagraphText(statusText) {
     this.statusParagraph.classList.remove('d-none');
     this.statusParagraph.textContent = statusText;
-
   }
 }
 
