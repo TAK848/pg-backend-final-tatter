@@ -19,11 +19,10 @@ class RetrieveTartView(APIView):
         tart = get_object_or_404(Tart, id=pk)
         if tart.user is None:
             return Response({'detail': 'ユーザーが存在しません。'}, status=status.HTTP_404_NOT_FOUND)
-        if not tart.was_deleted:
-            serializer = TartSerializer(instance=tart)
-            return Response(serializer.data, status.HTTP_200_OK)
-        else:
+        if tart.was_deleted:
             return Response({'detail': 'このTartは，削除されました。'}, status=status.HTTP_404_NOT_FOUND)
+        serializer = TartSerializer(instance=tart)
+        return Response(serializer.data, status.HTTP_200_OK)
 
 
 class ListTartView(APIView):

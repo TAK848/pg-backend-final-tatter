@@ -18,12 +18,6 @@ def make_random_tart_id(n=MAX_TART_ID_LENGTH):
             return made_id
 
 
-class TartManager(models.Manager):
-    def create_tart(self, user, tart_text):
-        tart = self.create(user=user, text=tart_text)
-        return tart
-
-
 class Tart(models.Model):
     id = models.CharField(
         default=make_random_tart_id,
@@ -48,5 +42,3 @@ class Tart(models.Model):
     updated_at = models.DateTimeField('更新日時', auto_now=True)
     was_edited = models.BooleanField('編集済', default=False)
     was_deleted = models.BooleanField('削除済', default=False)
-
-    objects = TartManager()
