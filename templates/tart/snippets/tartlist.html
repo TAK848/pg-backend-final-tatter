@@ -2,6 +2,8 @@
 <template id="tartTemplate">{% include 'tart/snippets/tart_template.html' with template=True %}</template>
 {# 新規Tartを読み込むボタン #}
 <button class="btn btn-outline-primary rounded-pill w-100 mb-1 position-relative d-none tart-load-new"><span class="spinner-border spinner-border-sm me-1 d-none tart-load-new-spinner" role="status" aria-hidden="true"></span>新しいTartを取得<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger tart-load-new-badge invisible"></span></button>
+{# Tartが存在しない時などにメッセージを表示する場所 #}
+<p class="tart-status-message d-none"></p>
 {# Tart一覧用section #}
 <section id="tartList"></section>
 {# さらに過去のTartを読み込むボタン #}
