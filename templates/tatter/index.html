@@ -1,14 +1,19 @@
 {% extends 'tatter/base.html' %}
+{% load static %}
 {% block content %}
 <h1>
-  トップページ（仮）
+  Tatter
 </h1>
-{% if user.is_authenticated %}
-<p>
+{% if user.is_authenticated %}{# ログイン時 #}
+<p class="mb-1">
   {{ user.handle_name }}さん，Tatterへようこそ！<br>
   ログイン情報:{{ user.handle_name }}@{{ user.username}}&lt;{{ user.email }}&gt;
 </p>
-{% else %}
+{% include 'tart/snippets/compose_tart_modal.html' %}
+<main>
+  {% include 'tart/snippets/tartlist.html' with page_mode='home' %}
+</main>
+{% else %}{# 非ログイン時 #}
 <p>
   Tatterへようこそ！ログインは<a href="{% url 'account_login' %}">こちら</a>から，新規登録は<a href="{% url 'account_signup' %}">こちら</a>からどうぞ！
 </p>
