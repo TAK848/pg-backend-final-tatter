@@ -1,0 +1,12 @@
+{% extends 'tatter/base.html' %}
+{% load static %}
+{% block content %}
+<h1>
+  グローバルタイムライン
+</h1>
+{% include 'tart/snippets/compose_tart_modal.html' %}
+<main>
+  {% include 'tart/snippets/tartlist.html' with page_mode='global' %}
+</main>
+{% include 'tatter/snippets/js_data.html' with page_mode='global' %}
+{% endblock content %}

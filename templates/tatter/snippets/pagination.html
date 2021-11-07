@@ -1,0 +1,37 @@
+<nav aria-label="Page navigation">
+  <ul class="pagination justify-content-center mb-3">
+    {% if page_obj.has_previous %}
+    <li class="page-item"><a class="page-link" href="?page={{ page_obj.number|add:-1 }}"><span aria-hidden="true">&laquo;前へ</span></a></li>
+    {% endif %}
+    {% if page_obj.number >= 4 %}
+    <li class="page-item"><a class="page-link" href="?page=1"><span aria-hidden="true">1</span></a></li>
+    {% endif %}
+    {% if page_obj.number >= 5 %}
+    <li class="page-item disabled"><a class="page-link" href="?page={{ page_obj.number|add:-1 }}"><span aria-hidden="true">…</span></a></li>
+    {% elif page_obj.number >= 3 %}
+    <li class="page-item"><a class="page-link" href="?page={{ page_obj.number|add:-2 }}"><span aria-hidden="true">{{ page_obj.number|add:-2 }}</span></a></li>
+    {% endif %}
+
+    {% for num in page_obj.paginator.page_range %}{# 現在のページと前後1ページを表示 #}
+    {% if num <= page_obj.number|add:1 and num >= page_obj.number|add:-1 %}
+    {% if page_obj.number == num %}
+    <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
+    {% else %}
+    <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+
+    {% if page_obj.number <= page_obj.paginator.num_pages|add:-4 %}
+    <li class="page-item disabled"><a class="page-link" href="?page={{ page_obj.number|add:1 }}"><span aria-hidden="true">…</span></a></li>
+    {% elif page_obj.number <= page_obj.paginator.num_pages|add:-2 %}
+    <li class="page-item"><a class="page-link" href="?page={{ page_obj.number|add:2 }}"><span aria-hidden="true">{{ page_obj.number|add:2 }}</span></a></li>
+    {% endif %}
+    {% if page_obj.number <= page_obj.paginator.num_pages|add:-3 %}
+    <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}"><span aria-hidden="true">{{ page_obj.paginator.num_pages }}</span></a></li>
+    {% endif %}
+    {% if page_obj.has_next %}
+    <li class="page-item"><a class="page-link" href="?page={{ page_obj.number|add:1 }}"><span aria-hidden="true">次へ&raquo;</span></a></li>
+    {% endif %}
+  </ul>
+</nav>
