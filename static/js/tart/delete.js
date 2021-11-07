@@ -23,11 +23,11 @@ class TartDelete {
   onDeleteClicked(event) {
     const instance = TartDelete.getInstanceFromComponent(event.target);
     TartDelete.deletingInstance = instance;
-    let deleteConfirmModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('deleteConfirmModal'));
+    const deleteConfirmModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('deleteConfirmModal'));
     deleteConfirmModal.show();
-    let deleteConfirmBtn = document.querySelector('.tart-delete-submit');
-    TatterJsData.deleteTartId = instance.article.tart.id;
+    const deleteConfirmBtn = document.querySelector('.tart-delete-submit');
     deleteConfirmBtn.addEventListener('click', instance.onDeleteSubmitClicked, false);
+    console.log('aaa');
   }
   /** 削除確認モーダルで削除ボタンが押されたら削除を実行（削除中は操作不能にするスピナーモーダルを表示） */
   onDeleteSubmitClicked(event) {
