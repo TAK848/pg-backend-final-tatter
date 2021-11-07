@@ -1,0 +1,34 @@
+{% load static %}
+<div class="mb-3 px-0 user-list">
+  {% for user in user_list %}
+  <div class="border ps-0 py-2 px-2 position-relative user-list-item" data-displayusername="{{ user.display_username }}">
+    <div class="align-items-center" style="display:flex;">
+      <div class="tart-usericon ms-2" style="width: 41px;">
+        <img src="{% static 'default-icon-400.png' %}" class="img-fluid rounded-circle">
+      </div>
+      <div class="align-items-center mx-2" style="flex: 1;display:flex;min-width:0px;">
+        <div class="tart-user-names" style="flex: 1;min-width:0px;">
+          <p class="h6 my-0 text-truncate tart-handle-name">{{user.handle_name}}</p>
+          <p class="text-muted small my-0 text-truncate tart-display-username">@{{user.display_username}}{% if user.uuid in followed_list %}<span class="rounded bg-secondary text-white ms-1 px-1">フォローされています</span>{% endif %}</p>
+        </div>
+        <div class="user-follow-button-area text-center ms-2">
+          {% if user != request.user %}
+          <button type="button" data-useruuid="{{ user.uuid }}" data-userdisplayusername="{{ user.display_username }}" class="btn btn-sm rounded-pill fw-bold user-follow-button userlist-follow-button {% if user.uuid in following_list %}btn-outline-dark unfollow{% else %}btn-dark follow{% endif %}"></button>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="align-items-center m-0 p-0" style="display:flex;">
+      <div class="tart-usericon ms-2" style="width: 41px;"></div>
+      <div class="align-items-center ms-2" style="flex: 1;">{{user.biography|truncatechars:100}}
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <p>対象のユーザーが存在しません。</p>
+  {% endfor %}
+</div>
+{% if object_list %}{% include 'tatter/snippets/pagination.html' %}{% endif %}
+{% include 'follow/snippets/unfollow_confirm_modal.html' %}
+{% include 'tart/snippets/compose_tart_modal.html' %}
+{% include 'tatter/snippets/js_data.html' with page_mode='userlist' %}

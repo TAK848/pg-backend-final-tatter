@@ -1,0 +1,7 @@
+{% extends 'tatter/base.html' %}
+{% load static %}
+{% block title %}ユーザー一覧{% endblock title %}
+{% block content %}
+<h1>ユーザー一覧</h1>
+{% include 'tatter/snippets/userlist.html' with user_list=object_list%}
+{% endblock content %}
