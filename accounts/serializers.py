@@ -10,9 +10,18 @@ class UserSerializer(ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('handle_name', 'display_username', 'uuid', 'follower_count')
-        read_only_fields = (
-            'handle_name', 'display_username', 'uuid', 'follower_count')
+        fields = [
+            'handle_name',
+            'display_username',
+            'uuid',
+            'follower_count'
+        ]
+        read_only_fields = [
+            'handle_name',
+            'display_username',
+            'uuid',
+            'follower_count'
+        ]
 
     def get_follower_count(self, obj):
         return Follow.objects.filter(follower=obj).count()
