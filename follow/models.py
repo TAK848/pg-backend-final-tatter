@@ -17,7 +17,10 @@ class Follow(models.Model):
     followed_at = models.DateTimeField('フォロー日時', auto_now_add=True)
 
     class Meta:
-        unique_together = ('follower', 'followee')
+        models.UniqueConstraint(
+            fields=['followee', 'follower'],
+            name="followee_follower_unique"
+        ),
 
     def __str__(self):
         return f'@{self.followee.display_username} -> @{self.follower.display_username}'
