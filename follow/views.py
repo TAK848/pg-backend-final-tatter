@@ -23,11 +23,13 @@ class FollowingListView(FollowBaseListView):
     mode = 'following'
 
     def get_queryset(self):
-        return User.objects.filter(uuid__in=super().get_user().followee.values_list('follower__uuid'))
+        following_list = super().get_user().followee.values_list('follower__uuid')
+        return User.objects.filter(uuid__in=following_list)
 
 
 class FollowersListView(FollowBaseListView):
     mode = 'followers'
 
     def get_queryset(self):
-        return User.objects.filter(uuid__in=super().get_user().follower.values_list('followee__uuid'))
+        followed_list = super().get_user().follower.values_list('followee__uuid')
+        return User.objects.filter(uuid__in=followed_list)
