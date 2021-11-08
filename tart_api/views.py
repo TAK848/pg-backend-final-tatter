@@ -132,7 +132,3 @@ class CheckUpdateView(APIView):
                 Q(user__in=following_user) | Q(user=request.user))
         count = tart_query_set.count()
         return Response({'count': count}, status.HTTP_200_OK)
-
-
-def get_tart_queryset():
-    pass

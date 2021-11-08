@@ -1,5 +1,6 @@
-from follow.models import Follow
 from rest_framework.serializers import ModelSerializer, SerializerMethodField
+
+from follow.models import Follow
 
 
 class FollowSerializer(ModelSerializer):
@@ -12,11 +13,4 @@ class FollowSerializer(ModelSerializer):
         read_only_fields = ['followee', 'follower_count']
 
     def get_follower_count(self, instance):
-        # print(instance)
-        print(Follow.objects.filter(follower=instance.follower).count())
-        print(instance.follower)
-        print('a')
-        # # instance.
-
-        # return Follow.objects.filter(follower=obj).count()
         return Follow.objects.filter(follower=instance.follower).count()
