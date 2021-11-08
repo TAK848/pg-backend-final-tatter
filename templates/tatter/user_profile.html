@@ -1,14 +1,14 @@
 {% extends 'tatter/base.html' %}
 {% load static %}
-{% block title %}{{ got_user.handle_name }}さん（@{{ got_user.display_username }}） | Tatter{% endblock title %}
+{% block title %}{{ profile_user.handle_name }}さん（@{{ profile_user.display_username }}） | Tatter{% endblock title %}
 {% block content %}
 <div class="align-items-center mb-3 user-big">
   <div class="user-big-icon">
     <img src="{% static 'default-icon-400.png' %}" class="img-fluid rounded-circle">
   </div>
   <div class="ms-2 user-big-basic">
-    {% if exist_user and not got_user.account_is_hidden %}
-    <p class="my-0 text-truncate"><span class="h4">{{ got_user.handle_name }}</span><br><span class="text-muted small">@{{ got_user.display_username }}</span>{% if followed %}<span class="rounded bg-secondary text-white ms-1 px-1 small">フォローされています</span></p>{% endif %}
+    {% if exist_user and not profile_user.account_is_hidden %}
+    <p class="my-0 text-truncate"><span class="h4">{{ profile_user.handle_name }}</span><br><span class="text-muted small">@{{ profile_user.display_username }}</span>{% if followed %}<span class="rounded bg-secondary text-white ms-1 px-1 small">フォローされています</span></p>{% endif %}
     {% else %}
     @{{ search_username }}<br>
     このアカウントは存在しません。
@@ -16,8 +16,8 @@
   </div>
 </div>
 <p>
-  {% if got_user.biography %}
-  {{ got_user.biography|linebreaksbr|urlize }}
+  {% if profile_user.biography %}
+  {{ profile_user.biography|linebreaksbr|urlize }}
   {% else %}
   <span class="text-muted">自己紹介が未設定です。</span>
   {% endif %}
@@ -33,18 +33,18 @@
 {% include 'follow/snippets/unfollow_confirm_modal.html' %}
 {% endif %}
 
-{% if got_user.tart_is_private and not is_me %}
+{% if profile_user.tart_is_private and not is_me %}
 <p>
   このアカウントのTartは，非公開です。<strong>未実装</strong>
 </p>
 {% else %}
 {% endif %}
 
-{% if exist_user and not got_user.account_is_hidden %}
+{% if exist_user and not profile_user.account_is_hidden %}
 <div class="account-info">
   <p><span class="fw-bold">{{tart_count}}</span><span class="ms-1 text-muted">Tart</span>
-    <a href="{% url 'follow:following' username=got_user.display_username %}" class="text-black follow-count ms-4"><span class="fw-bold">{{ got_user.followee.count }}</span><span class="ms-1 text-muted">フォロー中</span></a>
-    <a href="{% url 'follow:followers' username=got_user.display_username %}" class="ms-4 text=black follower-count"><span class="fw-bold follower-count-number">{{ got_user.follower.count }}</span><span class="ms-1 text-muted">フォロワー</span></a>
+    <a href="{% url 'follow:following' username=profile_user.display_username %}" class="text-black follow-count ms-4"><span class="fw-bold">{{ profile_user.followee.count }}</span><span class="ms-1 text-muted">フォロー中</span></a>
+    <a href="{% url 'follow:followers' username=profile_user.display_username %}" class="ms-4 text=black follower-count"><span class="fw-bold follower-count-number">{{ profile_user.follower.count }}</span><span class="ms-1 text-muted">フォロワー</span></a>
   </p>
 </div>
 {% endif %}

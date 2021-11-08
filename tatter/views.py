@@ -22,7 +22,7 @@ class UserProfileView(LoginRequiredMixin, View):
         context = {
             'search_username': username,
             'is_me': False,
-            'got_user': None,
+            'profile_user': None,
         }
         try:
             user = User.objects.get(username=username.lower())
@@ -33,7 +33,7 @@ class UserProfileView(LoginRequiredMixin, View):
 
         if user == request.user:
             context['is_me'] = True
-        context['got_user'] = user
+        context['profile_user'] = user
         context['tart_count'] = Tart.objects.filter(user=user).count()
         context['following'] = Follow.objects.filter(
             followee=request.user, follower=user).exists()

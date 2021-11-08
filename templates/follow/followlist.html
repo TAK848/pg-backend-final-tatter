@@ -1,24 +1,24 @@
 {% extends 'tatter/base.html' %}
 {% load static %}
-{% block title %}{{got_user.handle_name}}さん（@{{ got_user.display_username }}）{% if follow_mode == 'following' %}がフォローしているアカウント{% elif follow_mode == 'followers' %}のフォロワー{% endif %}{% endblock title %}
+{% block title %}{{profile_user.handle_name}}さん（@{{ profile_user.display_username }}）{% if follow_mode == 'following' %}がフォローしているアカウント{% elif follow_mode == 'followers' %}のフォロワー{% endif %}{% endblock title %}
 {% block content %}
 <div class="align-items-center mb-3 user-big">
   <div class="user-big-icon">
     <img src="{% static 'default-icon-400.png' %}" class="img-fluid rounded-circle">
   </div>
   <div class="user-big-basic ms-2">
-    <p class="my-0 text-truncate"><span class="h4">{{ got_user.handle_name }}</span><br><span class="text-muted small">@{{ got_user.display_username }}</span>{% if followed %}<span class="rounded bg-secondary text-white ms-1 px-1 small">フォローされています</span></p>{% endif %}
+    <p class="my-0 text-truncate"><span class="h4">{{ profile_user.handle_name }}</span><br><span class="text-muted small">@{{ profile_user.display_username }}</span>{% if followed %}<span class="rounded bg-secondary text-white ms-1 px-1 small">フォローされています</span></p>{% endif %}
   </div>
 </div>
 <div class="d-grid mb-3">
-  <a href="{% url 'tatter:user_profile' username=got_user.display_username %}" class="btn  btn-outline-secondary btn-sm" role="button">プロフィールに戻る</a>
+  <a href="{% url 'tatter:user_profile' username=profile_user.display_username %}" class="btn  btn-outline-secondary btn-sm" role="button">プロフィールに戻る</a>
 </div>
 <ul class="nav nav-pills nav-justified">
   <li class="nav-item">
-    <a class="nav-link{% if follow_mode == 'following' %} active{% endif %}" {% if follow_mode == 'following' %} aria-current="page" {% endif %} href="{% url 'follow:following' username=got_user.display_username %}">{{ got_user.followee.count }}フォロー中</a>
+    <a class="nav-link{% if follow_mode == 'following' %} active{% endif %}" {% if follow_mode == 'following' %} aria-current="page" {% endif %} href="{% url 'follow:following' username=profile_user.display_username %}">{{ profile_user.followee.count }}フォロー中</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link{% if follow_mode == 'followers' %} active{% endif %}" {% if follow_mode == 'followers' %} aria-current="page" {% endif %} href="{% url 'follow:followers' username=got_user.display_username %}">{{ got_user.follower.count }}フォロワー</a>
+    <a class="nav-link{% if follow_mode == 'followers' %} active{% endif %}" {% if follow_mode == 'followers' %} aria-current="page" {% endif %} href="{% url 'follow:followers' username=profile_user.display_username %}">{{ profile_user.follower.count }}フォロワー</a>
   </li>
 </ul>
 {% include 'tatter/snippets/userlist.html' with user_list=object_list%}
