@@ -14,7 +14,7 @@ class FollowBaseListView(UserBaseListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['got_user'] = self.get_user()
+        context['profile_user'] = self.get_user()
         context['follow_mode'] = self.mode
         return context
 
