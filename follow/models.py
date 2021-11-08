@@ -10,17 +10,17 @@ class Follow(models.Model):
     uuid = models.UUIDField(
         default=uuid.uuid4,
         primary_key=True,
-        editable=False
+        editable=False,
     )
     followee = models.ForeignKey(
         User,
         related_name='followee',
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
     )
     follower = models.ForeignKey(
         User,
         related_name='follower',
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
     )
 
     followed_at = models.DateTimeField('フォロー日時', auto_now_add=True)
@@ -28,7 +28,7 @@ class Follow(models.Model):
     class Meta:
         models.UniqueConstraint(
             fields=['followee', 'follower'],
-            name="followee_follower_unique"
+            name="followee_follower_unique",
         ),
 
     def __str__(self):
