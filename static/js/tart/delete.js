@@ -27,7 +27,6 @@ class TartDelete {
     deleteConfirmModal.show();
     const deleteConfirmBtn = document.querySelector('.tart-delete-submit');
     deleteConfirmBtn.addEventListener('click', instance.onDeleteSubmitClicked, false);
-    console.log('aaa');
   }
   /** 削除確認モーダルで削除ボタンが押されたら削除を実行（削除中は操作不能にするスピナーモーダルを表示） */
   onDeleteSubmitClicked(event) {
