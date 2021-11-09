@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'accounts',
     'tart',
     'tart_api',
+    'follow',
+    'follow_api',
 
     'django.contrib.sites',
     'allauth',
@@ -117,10 +119,10 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
     {
-        'NAME': 'accounts.password_validation.MixInSymbolValidator',
+        'NAME': 'accounts.password_validators.MixInSymbolValidator',
     },
     {
-        'NAME': 'accounts.password_validation.AsciiSymbolValidator',
+        'NAME': 'accounts.password_validators.AsciiSymbolValidator',
     },
 ]
 

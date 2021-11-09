@@ -1,5 +1,7 @@
 from django.contrib.auth import get_user_model
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
+from follow.models import Follow
 from rest_framework import status
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import IsAuthenticated
@@ -32,6 +34,7 @@ class ListTartView(APIView):
         id_date__gt = request.query_params.get('id_date__gt')
         id_date__lt = request.query_params.get('id_date__lt')
         max_results = request.query_params.get('max_results')
+        mode = request.query_params.get('mode')
         if max_results:
             try:
                 max_results = int(max_results)
@@ -55,6 +58,11 @@ class ListTartView(APIView):
             base_tart = get_object_or_404(Tart, id=id_date__lt)
             tart_query_set = tart_query_set.filter(
                 created_at__lt=base_tart.created_at)
+        if mode == 'home':
+            following_user = Follow.objects.filter(
+                followee=request.user).values_list('follower')
+            tart_query_set = tart_query_set.filter(
+                Q(user__in=following_user) | Q(user=request.user))
         tart_query_set = tart_query_set[:max_results]
         serializer = TartSerializer(instance=tart_query_set, many=True)
         return Response(serializer.data, status.HTTP_200_OK)
@@ -109,6 +117,7 @@ class CheckUpdateView(APIView):
         id_date__gt = request.query_params.get('id_date__gt')
         tart_query_set = Tart.objects.exclude(user=None)
         user_uuid = request.query_params.get('userUuid')
+        mode = request.query_params.get('mode')
         if user_uuid:
             user = get_object_or_404(User, uuid=user_uuid)
             tart_query_set = tart_query_set.filter(user=user)
@@ -116,5 +125,10 @@ class CheckUpdateView(APIView):
             base_tart = get_object_or_404(Tart, id=id_date__gt)
             tart_query_set = tart_query_set.filter(
                 created_at__gt=base_tart.created_at)
+        if mode == 'home':
+            following_user = Follow.objects.filter(
+                followee=request.user).values_list('follower')
+            tart_query_set = tart_query_set.filter(
+                Q(user__in=following_user) | Q(user=request.user))
         count = tart_query_set.count()
         return Response({'count': count}, status.HTTP_200_OK)

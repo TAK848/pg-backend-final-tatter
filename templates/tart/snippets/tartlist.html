@@ -25,7 +25,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <p>この操作は取り消せません。プロフィール，あなたをフォローしているアカウントのタイムライン（未実装），Tatterの検索結果（未実装）からTartが削除されます。 </p>
+        <p>この操作は取り消せません。プロフィール，あなたをフォローしているアカウントのタイムライン，Tatterの検索結果（未実装）からTartが削除されます。 </p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
@@ -42,5 +42,3 @@
     </div>
   </div>
 </div>
-{# javascript処理にどうしても必要なデータ #}
-<div class="d-none js-data" data-pageMode="{{ page_mode }}" {% if page_mode == 'detail' %}data-tartDetailId="{{ request.resolver_match.kwargs.pk }}"{% endif %} {% if page_mode == 'profile' %}data-profileUserUuid="{{ got_user.uuid }}" data-profileUserDisplayUsername="{{ got_user.display_username }}" data-profileUserHandleName="{{ got_user.handle_name }}"{% endif %} data-tartDetailPkUrl="{% url 'tart:detail' pk='pk' %}" data-tartDeletePkUrl="{% url 'tart_api:delete' pk='pk' %}" data-tartUpdatePkUrl="{% url 'tart_api:update' pk='pk' %}" data-tartListUrl="{% url 'tart_api:list' %}" data-tartRetrievePkUrl="{% url 'tart_api:retrieve' pk='pk' %}" data-tartComposeUrl="{% url 'tart_api:compose' %}" data-tartCheckUpdateUrl="{% url 'tart_api:check_update' %}" data-tatterIndexUrl="{% url 'tatter:index' %}" data-requestedUserUuid="{{ user.uuid }}" data-requestedUserDisplayUsername="{{ user.display_username }}" data-requestedUserHandleName="{{ user.handle_name }}" data-userProfileUsernameUrl="/user/username/"></div>

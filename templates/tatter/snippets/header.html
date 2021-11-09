@@ -12,12 +12,14 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'tatter:index' %}">Home</a>
         </li>
+        {% if user.is_authenticated %}
         <li class="nav-item">
-          <a class="nav-link" href="#">Test1</a>
+          <a class="nav-link" href="{% url 'tatter:global' %}">Global</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Test2</a>
+          <a class="nav-link" href="{% url 'tatter:user_list' %}" tabindex="-1" aria-disabled="true">User list</a>
         </li>
+        {% endif %}
       </ul>
       {% if user.is_authenticated %}
       <ul class="navbar-nav mb-0">

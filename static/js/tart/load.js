@@ -4,9 +4,6 @@ class LoadTart {
   static button;
   static firstLoadingFinished = false;
   static loadingTime;
-  /**
-   * @param {Boolean} visible 可視性
-   */
   static init() {
     TartArticle.init();
     this.spinner = document.querySelector('.tart-load-spinner');
@@ -19,7 +16,6 @@ class LoadTart {
       LoadOldTart.init();
       LoadNewTart.init();
     }
-    ComposeTart.init();
   }
   /**
    * @param {Boolean} visible 可視性
@@ -54,6 +50,7 @@ class LoadTart {
     if (TatterJsData.pageIsDetail) TartAjax.retrieveGet(TatterJsData.detailTartId, this._afterFetch.bind(this));
     else {
       if (TatterJsData.pageIsProfile) query.userUuid = TatterJsData.profileUser.uuid;
+      query.mode = TatterJsData.mode;
       TartAjax.listGet(query, this._afterFetch.bind(this));
     }
   }
@@ -210,6 +207,7 @@ class LoadNewTart {
       id_date__gt: Tart.newestTartId,
     };
     if (TatterJsData.pageIsProfile) params['userUuid'] = TatterJsData.profileUser.uuid;
+    params['mode'] = TatterJsData.mode;
     TartAjax.checkUpdateGet(params, LoadNewTart.onUpdateCountGet);
   }
   /** 新規Tartの件数取得apiにアクセス後 */
