@@ -8,13 +8,12 @@ class Follow {
       new Follow(document.querySelector('.user-follow-button'));
     } else if (TatterJsData.pageIsUserList) {
       this.userlistItems = document.querySelectorAll('.user-list .user-list-item');
-      for (let i = 0, length = this.userlistItems.length; i < length; i++) {
-        const userListIrem = this.userlistItems.item(i);
-        userListIrem.style.cursor = 'pointer';
-        userListIrem.addEventListener('click', () => {
-          location.href = TatterJsData.getProfileURL(userListIrem.dataset['displayusername']);
+      for (const userListItem of this.userlistItems) {
+        userListItem.style.cursor = 'pointer';
+        userListItem.addEventListener('click', () => {
+          location.href = TatterJsData.getProfileURL(userListItem.dataset['displayusername']);
         })
-        const userFollowButton = userListIrem.querySelector('.user-follow-button')
+        const userFollowButton = userListItem.querySelector('.user-follow-button')
         if (userFollowButton) new Follow(userFollowButton);
       }
     }
