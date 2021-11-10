@@ -30,7 +30,7 @@
   <div class="row justify-content-center">
     <div class="col-lg-6">
       <div class="form-floating mb-3">
-        <input type="text" id="id_handle_name" class="form-control{% if form.handle_name.errors %} is-invalid{% endif %}" name="handle_name" value="{% if form.handle_name.value %}{{ form.handle_name.value }}{% else %}{{ user.handle_name }}{% endif %}" required placeholder="名前（表示名）" autocomplete="nickname" spellcheck="true" autocorrect="on">
+        <input type="text" id="id_handle_name" class="form-control{% if request.method == 'POST' and not form.handle_name.errors %} is-valid{% elif form.handle_name.errors %} is-invalid{% endif %}" name="handle_name" value="{% if form.handle_name.value %}{{ form.handle_name.value }}{% else %}{{ user.handle_name }}{% endif %}" required placeholder="名前（表示名）" autocomplete="nickname" spellcheck="true" autocorrect="on">
         <label for="id_handle_name" class="">
           名前（表示名）
         </label>
@@ -72,13 +72,24 @@
 
     <div class="col-12">
       <div class="form-floating mb-3">
-        <textarea class="form-control" placeholder="自己紹介を入力してください。" id="id_biography" style="height: 150px" name="biography" maxlength="{{ form.biography.field.max_length }}" aria-describedby="biographyHelp">{% if form.biography.value %}{{ form.biography.value }}{% else %}{{ user.biography }}{% endif %}</textarea>
+        <textarea class="form-control{% if request.method == 'POST' and not form.biography.errors %} is-valid{% elif form.biography.errors %} is-invalid{% endif %}" placeholder="自己紹介を入力してください。" id="id_biography" style="height: 150px" name="biography" maxlength="{{ form.biography.field.max_length }}" aria-describedby="biographyHelp">{% if form.biography.value %}{{ form.biography.value }}{% else %}{{ user.biography }}{% endif %}</textarea>
         <label for="id_biography">
           自己紹介
         </label>
         <div id="biographyHelp" class="form-text">
           自己紹介は，{{ form.biography.field.max_length }}文字以内です。
         </div>
+        {% if form.biography.errors %}
+        {% for error in form.biography.errors %}
+        <div class="invalid-feedback">
+          {{ error|escape }}
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="invalid-feedback">
+          自己紹介を入力してください。
+        </div>
+        {% endif %}
       </div>
     </div>
 
@@ -96,7 +107,7 @@
         {% endfor %}
         {% elif form.non_field_errors %}
         <div class="invalid-feedback">
-          再度正しいパスワードを入力してください。パスワードを忘れた場合は，<a href="{% url 'account_change_password' %}">こちらから変更</a>してください。
+          正しいパスワードを入力してください。パスワードを忘れた場合は，<a href="{% url 'account_change_password' %}">こちらから変更</a>してください。
         </div>
         {% else %}
         <div class="invalid-feedback">
