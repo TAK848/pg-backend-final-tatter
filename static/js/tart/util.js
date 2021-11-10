@@ -40,6 +40,8 @@ class TatterJsData {
     this._deleteURLWithPk = this.getDataset('tartDeletePkUrl');
     this._editURLWithPk = this.getDataset('tartUpdatePkUrl');
     this._retrieveURLWithPk = this.getDataset('tartRetrievePkUrl');
+    this.likeCreateURL = this.getDataset('likeCreateUrl');
+    this._likeDestroyURLWithTartId = this.getDataset('likeDestroyTartIdUrl');
     this.followCreateURL = this.getDataset('followCreateUrl');
     this._followDestroyURLWithUuid = this.getDataset('followDestroyUuidUrl');
     this.requestedUser = User.createOrGetUserInstance({
@@ -50,8 +52,8 @@ class TatterJsData {
     this.mode = this.jsDataDiv.dataset.pagemode;
     if (this.mode === 'home');
     else if (this.mode === 'global');
-    else if (this.mode === 'detail') this.detailTartId = this.getDataset('tartDetailId');
-    else if (this.mode === 'profile') {
+    else if (this.pageIsDetail) this.detailTartId = this.getDataset('tartDetailId');
+    else if (this.pageIsProfile) {
       this.profileUser = User.createOrGetUserInstance({
         uuid: this.getDataset('profileUserUuid'),
         displayUsername: this.getDataset('profileUserDisplayUsername'),
@@ -102,6 +104,14 @@ class TatterJsData {
     return this._retrieveURLWithPk.replace('pk', tartId);
   }
   /**
+   * いいね解除したいTartIdから解除用URLを取得
+   * @param {String} tartId いいね解除したいTartのID
+   * @returns {String} フォロー解除用URL
+   */
+  static getLikeDestroyURL(tartId = required()) {
+    return this._likeDestroyURLWithTartId.replace('tart_id', tartId);
+  }
+  /**
    * 表示ユーザー名からプロフィールのURLを取得
    * @param {String} displayUsername ユーザー名
    * @returns {String} プロフィールURL
@@ -121,7 +131,7 @@ class TatterJsData {
    * @type {Boolean} ユーザーprofileページかどうか
    */
   static get pageIsProfile() {
-    return this.mode === 'profile';
+    return this.mode === 'profile' || this.mode === 'profile_likes';
   }
   /**
    * @type {Boolean} ユーザーリスト表示ページかどうか

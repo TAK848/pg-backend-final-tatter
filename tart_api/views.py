@@ -23,7 +23,10 @@ class RetrieveTartView(APIView):
             return Response({'detail': 'ユーザーが存在しません。'}, status=status.HTTP_404_NOT_FOUND)
         if tart.was_deleted:
             return Response({'detail': 'このTartは，削除されました。'}, status=status.HTTP_404_NOT_FOUND)
-        serializer = TartSerializer(instance=tart)
+        serializer = TartSerializer(
+            instance=tart,
+            context={'request_user': request.user},
+        )
         return Response(serializer.data, status.HTTP_200_OK)
 
 
@@ -47,7 +50,10 @@ class ListTartView(APIView):
             was_deleted=True).order_by('-created_at')
         if user_uuid:
             user = get_object_or_404(User, uuid=user_uuid)
-            tart_query_set = tart_query_set.filter(user=user)
+            if mode == 'profile':
+                tart_query_set = tart_query_set.filter(user=user)
+            elif mode == 'profile_likes':
+                tart_query_set = tart_query_set.filter(like__user=user)
         elif user_uuid == '':
             return Response({'detail': 'このアカウントは存在しません。'}, status=status.HTTP_404_NOT_FOUND)
         if id_date__gt:
@@ -64,7 +70,11 @@ class ListTartView(APIView):
             tart_query_set = tart_query_set.filter(
                 Q(user__in=following_user) | Q(user=request.user))
         tart_query_set = tart_query_set[:max_results]
-        serializer = TartSerializer(instance=tart_query_set, many=True)
+        serializer = TartSerializer(
+            instance=tart_query_set,
+            many=True,
+            context={'request_user': request.user},
+        )
         return Response(serializer.data, status.HTTP_200_OK)
 
 
@@ -87,6 +97,7 @@ class UpdateTartView(APIView):
                 instance=tart,
                 data=request.data,
                 partial=True,
+                context={'request_user': request.user},
             )
             serialier.is_valid(raise_exception=True)
             serialier.save()
@@ -120,7 +131,10 @@ class CheckUpdateView(APIView):
         mode = request.query_params.get('mode')
         if user_uuid:
             user = get_object_or_404(User, uuid=user_uuid)
-            tart_query_set = tart_query_set.filter(user=user)
+            if mode == 'profile':
+                tart_query_set = tart_query_set.filter(user=user)
+            elif mode == 'profile_likes':
+                tart_query_set = tart_query_set.filter(like__user=user)
         if id_date__gt:
             base_tart = get_object_or_404(Tart, id=id_date__gt)
             tart_query_set = tart_query_set.filter(
