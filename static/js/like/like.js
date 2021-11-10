@@ -7,7 +7,7 @@ class Like {
     this.likeButton = this.article.dom.querySelector('.tart-like');
     this.likeButton.style.cursor = 'pointer';
     this.counter = this.likeButton.querySelector('.tart-like-count');
-    this.detailCounter = this.article.dom.querySelector('.tart-like-detail-count');
+    if (TatterJsData.pageIsDetail) this.detailCounter = this.article.dom.querySelector('.tart-like-detail-count');
     this.icon = this.likeButton.querySelector('.tart-like-icon');
     this.iconFill = this.likeButton.querySelector('.tart-like-icon-fill');
     this.likeButton.addEventListener('click', this.onLikeClicked.bind(this));
@@ -18,6 +18,9 @@ class Like {
     this.liked = this.article.tart.liked;
     this.displayCount = this.article.tart.likeCount;
   }
+  /**
+   * @param {Boolean} liked ユーザーがいいねしたかどうか
+   */
   set liked(liked) {
     if (liked) {
       this.likeButton.classList.add('text-danger');
@@ -31,6 +34,7 @@ class Like {
       this.likeButton.classList.add('text-muted');
     }
   }
+  /** いいねボタンが押されて通信中でなければ，ひとまず表示を更新した上で送信 */
   onLikeClicked(event) {
     if (this.sending) return;
     this.sending = true;
@@ -44,10 +48,14 @@ class Like {
       this.displayCount = this.article.tart.likeCount + 1;
     }
   }
+  /**
+   * @param {Number} count いいね数 
+   */
   set displayCount(count) {
     this.counter.textContent = count;
-    this.detailCounter.textContent = count;
+    if (TatterJsData.pageIsDetail) this.detailCounter.textContent = count;
   }
+  /** いいね通信後の処理 */
   afterLiked(data) {
     if (data.status === 201) {
       this.article.tart.liked = true;
@@ -59,8 +67,8 @@ class Like {
       alert('いいねできませんでした');
     } else alert(`不明なエラー\nステータスコード:${data.status}`);
     this.sending = false;
-
   }
+  /** いいね解除通信後の処理 */
   afterUnliked(data) {
     if (data.status === 204) {
       this.article.tart.liked = false;
@@ -70,6 +78,5 @@ class Like {
       alert('いいねを解除できませんでした');
     } else alert(`不明なエラー\nステータスコード:${data.status}`);
     this.sending = false;
-
   }
 }
