@@ -8,6 +8,8 @@ class Tart {
     this.text = jsonData.text;
     this.createdAt = jsonData.createdAt;
     this.wasEdited = jsonData.wasEdited;
+    this.liked = jsonData.liked;
+    this.likeCount = jsonData.likeCount;
     this.user = User.createOrGetUserInstance(jsonData.user);
     this.user.addTartToList(this);
     this.insertToStaticList();
@@ -86,6 +88,9 @@ class Tart {
     this.text = jsonData.text;
     this.wasEdited = jsonData.wasEdited;
     this.article.update();
+    this.liked = jsonData.liked;
+    this.likeCount = jsonData.likeCount;
+    this.article.like.updateDom();
   }
   /**
    * 当該Tartの表示・データを削除する
@@ -179,6 +184,8 @@ class TartArticle {
       this.dom.querySelector('li.tart-delete').remove();
       this.dom.querySelector('li.tart-edit').remove();
     }
+    // いいね機能
+    this.like = new Like(this);
     // タイムライン表示の時は詳細情報リストを削除
     if (!TatterJsData.pageIsDetail) {
       this.dom.removeChild(this.dom.querySelector('ul.tart-detail-list'));
