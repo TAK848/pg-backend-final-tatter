@@ -42,9 +42,10 @@
 
 {% if exist_user and not profile_user.account_is_hidden %}
 <div class="account-info">
-  <p><span class="fw-bold">{{tart_count}}</span><span class="ms-1 text-muted">Tart</span>
+  <p><a href="{% url 'tatter:user_profile' username=profile_user.display_username %}" class="text-black follow-count"><span class="fw-bold">{{tart_count}}</span><span class="ms-1 text-muted">Tart</span></a>
     <a href="{% url 'follow:following' username=profile_user.display_username %}" class="text-black follow-count ms-4"><span class="fw-bold">{{ profile_user.followee.count }}</span><span class="ms-1 text-muted">フォロー中</span></a>
     <a href="{% url 'follow:followers' username=profile_user.display_username %}" class="ms-4 text=black follower-count"><span class="fw-bold follower-count-number">{{ profile_user.follower.count }}</span><span class="ms-1 text-muted">フォロワー</span></a>
+    <a href="{% url 'like:user_likes' username=profile_user.display_username %}" class="ms-4 text=black follower-count"><span class="fw-bold follower-count-number">{{ profile_user.like_set.count }}</span><span class="ms-1 text-muted">いいね</span></a>
   </p>
 </div>
 {% endif %}
@@ -52,7 +53,7 @@
 
 {% include 'tart/snippets/compose_tart_modal.html' %}
 <main>
-  {% include 'tart/snippets/tartlist.html' with page_mode='profile' %}
+  {% include 'tart/snippets/tartlist.html' %}
 </main>
-{% include 'tatter/snippets/js_data.html' with page_mode='profile' %}
+{% include 'tatter/snippets/js_data.html' with page_mode=mode %}
 {% endblock content %}
