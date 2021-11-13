@@ -21,7 +21,6 @@ class Like(models.Model):
         Tart,
         on_delete=models.CASCADE,
     )
-
     liked_at = models.DateTimeField('いいね日時', auto_now_add=True)
 
     class Meta:

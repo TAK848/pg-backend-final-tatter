@@ -3,7 +3,7 @@ from rest_framework.serializers import ModelSerializer, SerializerMethodField
 
 
 class LikeSerializer(ModelSerializer):
-    tart_like_count = SerializerMethodField('get_tart_like_count')
+    tart_like_count = SerializerMethodField()
 
     class Meta:
         model = Like
