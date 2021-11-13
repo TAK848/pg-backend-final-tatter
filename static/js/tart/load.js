@@ -83,11 +83,11 @@ class LoadTart {
   /** 初回自動ロードが終わった後の処理。取得ボタンを表示し，まだ古いTartがありそうなら下端に着いた時のロードトリガを設定する。 */
   static afterFirstLoading(data) {
     this.spinnerIsVisible = false;
-    if (!TatterJsData.mode === 'profile_likes') LoadNewTart.button.classList.remove('d-none');
+    if (TatterJsData.mode !== 'profile_likes') LoadNewTart.button.classList.remove('d-none');
     LoadOldTart.button.classList.remove('d-none');
     if (data.jsonBody.length === NUMBER_TO_LOAD_AT_A_TIME) window.addEventListener('scroll', this.onReachBottom, false);
     else LoadOldTart.noMoreTart = true;
-    if (!TatterJsData.mode === 'profile_likes') LoadNewTart.setUpdateCountGet();
+    if (TatterJsData.mode !== 'profile_likes') LoadNewTart.setUpdateCountGet();
     this.firstLoadingFinished = true;
   }
   /** 下端に到達したら，昔のTartを取得する */
@@ -161,7 +161,7 @@ class LoadNewTart {
     this.button = document.querySelector('.tart-load-new');
     this.spinner = document.querySelector('.tart-load-new-spinner');
     this.badge = document.querySelector('.tart-load-new-badge');
-    if (!TatterJsData.mode === 'profile_likes') this.button.addEventListener('click', this.onLoadNewTart.bind(this), false);
+    if (TatterJsData.mode !== 'profile_likes') this.button.addEventListener('click', this.onLoadNewTart.bind(this), false);
     else this.button.classList.add('d-none');
   }
   /** 

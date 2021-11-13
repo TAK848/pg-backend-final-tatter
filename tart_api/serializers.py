@@ -5,8 +5,8 @@ from tart.models import Tart
 
 class TartSerializer(ModelSerializer):
     user = UserSerializer(read_only=True)
-    like_count = SerializerMethodField('get_like_count')
-    liked = SerializerMethodField('get_liked')
+    like_count = SerializerMethodField()
+    liked = SerializerMethodField()
 
     class Meta:
         model = Tart
