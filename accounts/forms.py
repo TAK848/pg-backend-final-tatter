@@ -1,3 +1,5 @@
+import re
+
 from allauth.account.forms import LoginForm, SignupForm
 from django import forms
 from django.contrib.auth import get_user_model
@@ -46,7 +48,11 @@ class UpdateUserProfileForm(forms.ModelForm):
         )
 
     def clean_display_username(self):
-        return self.cleaned_data.get('display_username').strip().lstrip('@').strip()
+        cleaned_display_username = self.cleaned_data.get(
+            'display_username').strip().lstrip('@').strip()
+        if not re.fullmatch(r'^[\w]+\Z$', cleaned_display_username):
+            raise ValidationError('半角英数字またはアンダースコア（_）のみで入力してください。')
+        return cleaned_display_username
 
     def clean(self):
         uuid = self.cleaned_data.get('uuid')
@@ -54,7 +60,8 @@ class UpdateUserProfileForm(forms.ModelForm):
             user = User.objects.get(uuid=uuid)
             if not user.check_password(self.cleaned_data.get('password')):
                 raise ValidationError('パスワードが一致しませんでした。')
-            if not user.username == self.cleaned_data.get('display_username').lower():
+            display_username = self.cleaned_data.get('display_username')
+            if display_username and not user.username == display_username.lower():
                 self.cleaned_data['changed_initial_username'] = True
         except User.DoesNotExist:
             raise ValidationError('ユーザー情報を見つけられませんでした')
