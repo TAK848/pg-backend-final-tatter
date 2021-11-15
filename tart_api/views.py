@@ -23,18 +23,49 @@ class RetrieveTartView(APIView):
             return Response({'detail': 'ユーザーが存在しません。'}, status=status.HTTP_404_NOT_FOUND)
         if tart.was_deleted:
             return Response({'detail': 'このTartは，削除されました。'}, status=status.HTTP_404_NOT_FOUND)
-        serializer = TartSerializer(instance=tart)
+        serializer = TartSerializer(
+            instance=tart,
+            context={'request_user': request.user},
+        )
         return Response(serializer.data, status.HTTP_200_OK)
+
+
+def get_tartlist_query_set(request, request_mode):
+    id_date__gt = request.query_params.get('id_date__gt')
+    id_date__lt = request.query_params.get('id_date__lt')
+    page_mode = request.query_params.get('mode')
+    user_uuid = request.query_params.get('userUuid')
+    tart_query_set = Tart.objects.exclude(user=None).exclude(
+        was_deleted=True).order_by('-created_at')
+    if user_uuid:
+        user = get_object_or_404(User, uuid=user_uuid)
+        if page_mode == 'profile':
+            tart_query_set = tart_query_set.filter(user=user)
+        elif page_mode == 'profile_likes':
+            tart_query_set = tart_query_set.filter(like__user=user)
+    elif user_uuid == '':
+        raise User.DoesNotExist()
+    if page_mode == 'home':
+        following_user = Follow.objects.filter(
+            followee=request.user).values_list('follower')
+        tart_query_set = tart_query_set.filter(
+            Q(user__in=following_user) | Q(user=request.user))
+    if id_date__gt:
+        base_tart = get_object_or_404(Tart, id=id_date__gt)
+        tart_query_set = tart_query_set.filter(
+            created_at__gt=base_tart.created_at)
+    elif id_date__lt and request_mode == 'list':
+        base_tart = get_object_or_404(Tart, id=id_date__lt)
+        tart_query_set = tart_query_set.filter(
+            created_at__lt=base_tart.created_at)
+    return tart_query_set
 
 
 class ListTartView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
-        id_date__gt = request.query_params.get('id_date__gt')
-        id_date__lt = request.query_params.get('id_date__lt')
         max_results = request.query_params.get('max_results')
-        mode = request.query_params.get('mode')
         if max_results:
             try:
                 max_results = int(max_results)
@@ -42,35 +73,29 @@ class ListTartView(APIView):
                 return Response({'detail': '不正な入力形式です。'}, status.HTTP_400_BAD_REQUEST)
         else:
             max_results = 10
-        user_uuid = request.query_params.get('userUuid')
         tart_query_set = Tart.objects.exclude(user=None).exclude(
             was_deleted=True).order_by('-created_at')
-        if user_uuid:
-            user = get_object_or_404(User, uuid=user_uuid)
-            tart_query_set = tart_query_set.filter(user=user)
-        elif user_uuid == '':
+        try:
+            tart_query_set = get_tartlist_query_set(request, 'list')
+        except User.DoesNotExist:
             return Response({'detail': 'このアカウントは存在しません。'}, status=status.HTTP_404_NOT_FOUND)
-        if id_date__gt:
-            base_tart = get_object_or_404(Tart, id=id_date__gt)
-            tart_query_set = tart_query_set.filter(
-                created_at__gt=base_tart.created_at)
-        elif id_date__lt:
-            base_tart = get_object_or_404(Tart, id=id_date__lt)
-            tart_query_set = tart_query_set.filter(
-                created_at__lt=base_tart.created_at)
-        if mode == 'home':
-            following_user = Follow.objects.filter(
-                followee=request.user).values_list('follower')
-            tart_query_set = tart_query_set.filter(
-                Q(user__in=following_user) | Q(user=request.user))
         tart_query_set = tart_query_set[:max_results]
-        serializer = TartSerializer(instance=tart_query_set, many=True)
+        serializer = TartSerializer(
+            instance=tart_query_set,
+            many=True,
+            context={'request_user': request.user},
+        )
         return Response(serializer.data, status.HTTP_200_OK)
 
 
 class CreateTartView(CreateAPIView):
     serializer_class = TartSerializer
     permission_classes = [IsAuthenticated]
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['request_user'] = self.request.user
+        return context
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -87,6 +112,7 @@ class UpdateTartView(APIView):
                 instance=tart,
                 data=request.data,
                 partial=True,
+                context={'request_user': request.user},
             )
             serialier.is_valid(raise_exception=True)
             serialier.save()
@@ -114,21 +140,10 @@ class CheckUpdateView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
-        id_date__gt = request.query_params.get('id_date__gt')
         tart_query_set = Tart.objects.exclude(user=None)
-        user_uuid = request.query_params.get('userUuid')
-        mode = request.query_params.get('mode')
-        if user_uuid:
-            user = get_object_or_404(User, uuid=user_uuid)
-            tart_query_set = tart_query_set.filter(user=user)
-        if id_date__gt:
-            base_tart = get_object_or_404(Tart, id=id_date__gt)
-            tart_query_set = tart_query_set.filter(
-                created_at__gt=base_tart.created_at)
-        if mode == 'home':
-            following_user = Follow.objects.filter(
-                followee=request.user).values_list('follower')
-            tart_query_set = tart_query_set.filter(
-                Q(user__in=following_user) | Q(user=request.user))
+        try:
+            tart_query_set = get_tartlist_query_set(request, 'check_update')
+        except User.DoesNotExist:
+            return Response({'detail': 'このアカウントは存在しません。'}, status=status.HTTP_404_NOT_FOUND)
         count = tart_query_set.count()
         return Response({'count': count}, status.HTTP_200_OK)

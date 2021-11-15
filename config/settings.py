@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'tart_api',
     'follow',
     'follow_api',
+    'like',
+    'like_api',
 
     'django.contrib.sites',
     'allauth',

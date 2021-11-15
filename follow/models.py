@@ -29,7 +29,7 @@ class Follow(models.Model):
         models.UniqueConstraint(
             fields=['followee', 'follower'],
             name="followee_follower_unique",
-        ),
+        )
 
     def __str__(self):
         return f'@{self.followee.display_username} -> @{self.follower.display_username}'

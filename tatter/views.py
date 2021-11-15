@@ -17,7 +17,7 @@ class GlobalView(LoginRequiredMixin, TemplateView):
     template_name = 'tatter/global.html'
 
 
-class UserProfileView(LoginRequiredMixin, View):
+class UserProfileBaseView(LoginRequiredMixin, View):
     def get(self, request, username):
         context = {
             'search_username': username,
@@ -39,7 +39,12 @@ class UserProfileView(LoginRequiredMixin, View):
             followee=request.user, follower=user).exists()
         context['followed'] = Follow.objects.filter(
             follower=request.user, followee=user).exists()
+        context['mode'] = self.mode
         return TemplateResponse(request, 'tatter/user_profile.html', context)
+
+
+class UserProfileView(UserProfileBaseView):
+    mode = 'profile'
 
 
 class UserBaseListView(LoginRequiredMixin, ListView):
